@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -15,7 +14,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
-import java.awt.*;
 
 public class Gui extends Application {
 
@@ -25,7 +23,7 @@ public class Gui extends Application {
 
     BorderPane root = new BorderPane();
 
-    Image background = new Image(Gui.class.getResourceAsStream("bild.jpg"));
+    Image background = new Image(Gui.class.getResourceAsStream("se.su.inlupp/bild.jpg"));
     ImageView backgroundView = new ImageView(background);
 
     root.setCenter(backgroundView);
