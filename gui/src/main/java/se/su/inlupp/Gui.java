@@ -1,60 +1,121 @@
 package se.su.inlupp;
 
 import javafx.application.Application;
-import javafx.geometry.Pos;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
+import java.awt.*;
 
 public class Gui extends Application {
 
   public void start(Stage stage) {
+    stage.setTitle("Route Planner");
     Graph<String> graph = new ListGraph<String>();
-//    String javaVersion = System.getProperty("java.version");
-//    String javafxVersion = System.getProperty("javafx.version");
-//    Label label =
-//        new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-
-//    VBox root = new VBox(30, label);
-//    root.setAlignment(Pos.CENTER);
-//    Scene scene = new Scene(root, 640, 480);
-//    stage.setScene(scene);
-//    stage.show();
 
     BorderPane root = new BorderPane();
 
-    VBox vbox = new VBox();
-    FlowPane flowPane = new FlowPane();
+    Image background = new Image(Gui.class.getResourceAsStream("bild.jpg"));
+    ImageView backgroundView = new ImageView(background);
+    root.setCenter(backgroundView);
 
+    //Settings
+      Pane settingsPane = new Pane();
+      Label backgroundLabel = new Label("Change background");
+
+      backgroundLabel.relocate( 200, 100);
+
+      settingsPane.getChildren().add(backgroundLabel);
+
+
+      //Home-text
+      Label homeLabel = new Label ("Home");
+
+    //Search-button
+      Button searchButton = new Button("Search");
+      searchButton.setOnAction(new searchHandler());
+
+    //Lägga till-pane
+      Pane searchPane = new Pane();
+      Label start = new Label("Start");
+      Label stop = new Label("Stop");
+
+      TextField startField = new TextField();
+      TextField stopField = new TextField();
+
+      //Add-button
+      Button addButton = new Button("Add");
+      //searchButton.setOnAction(new searchHandler());
+
+      start.relocate( 200, 100);
+      stop.relocate(200, 200);
+      startField.relocate(200, 120);
+      stopField.relocate(200, 220);
+      searchButton.relocate(430, 300);
+      addButton.relocate(370, 220);
+
+
+      searchPane.getChildren().addAll(start, stop, startField, stopField, searchButton, addButton);
+
+      //Meny
+    VBox vboxMenu = new VBox();
     Menu menu = new Menu("Menu");
     MenuBar menuBar = new MenuBar();
-    vbox.getChildren().add(menuBar);
+    vboxMenu.getChildren().add(menuBar);
     menuBar.getMenus().add(menu);
-    MenuItem search = new MenuItem("Search route");
-    MenuItem newCity = new MenuItem("Add city");
-    MenuItem removeCity = new MenuItem("Remove city");
-    menu.getItems().addAll(search, newCity, removeCity);
+    MenuItem searchRoute = new MenuItem("Search route");
+    searchRoute.setOnAction(
+            (arg) -> {
+                root.setCenter(searchPane);
+            });
+    MenuItem settings = new MenuItem("Settings");
+    settings.setOnAction(
+            (arg) -> {
+                  root.setCenter(settingsPane);
+            });
+    MenuItem home = new MenuItem("Home");
+    home.setOnAction(
+            (arg) -> {
+                  root.setCenter(homeLabel);
+            });
 
-//    Button saveButton = new Button("Save");
+    menu.getItems().addAll(searchRoute, settings, home);
 
-    Label start = new Label ("Start");
-    start.setAlignment(Pos.BASELINE_RIGHT);
-    flowPane.getChildren().add(start);
-    vbox.getChildren().add(flowPane);
-    
-    root.getChildren().addAll(vbox, flowPane);
+    //Stoppa in i root
+    root.setTop(vboxMenu);
+    root.setCenter(homeLabel);
 
-
-
-
-    Scene scene = new Scene(vbox, 640, 480);
+    Scene scene = new Scene(root, 640, 480);
     stage.setScene(scene);
     stage.show();
 
   }
+
+  class searchRouteHandler implements EventHandler<ActionEvent>{
+      @Override
+      public void handle(ActionEvent event){
+
+      }
+  }
+
+  class searchHandler implements EventHandler<ActionEvent>{
+      @Override
+      public void handle(ActionEvent event){
+
+      }
+    }
+
+
 
   public static void main(String[] args) {
     launch(args);
