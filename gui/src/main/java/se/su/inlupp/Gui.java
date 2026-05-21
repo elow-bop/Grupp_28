@@ -27,6 +27,7 @@ public class Gui extends Application {
 
     Image background = new Image(Gui.class.getResourceAsStream("bild.jpg"));
     ImageView backgroundView = new ImageView(background);
+
     root.setCenter(backgroundView);
 
     //Settings
