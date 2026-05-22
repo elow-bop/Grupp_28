@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;
 
 import javax.xml.validation.Validator;
+import java.lang.runtime.SwitchBootstraps;
 import java.util.Optional;
 
 public class Gui extends Application {
@@ -21,6 +22,7 @@ public class Gui extends Application {
   public void start(Stage stage) {
 
     //Läsa in vad användren skriver
+
 
 
 
@@ -48,7 +50,6 @@ public class Gui extends Application {
 
     //Search-button
       Button searchButton = new Button("Search");
-      searchButton.setOnAction(new searchHandler());
 
     //Search-pane
       Pane searchPane = new Pane();
@@ -58,20 +59,33 @@ public class Gui extends Application {
       TextField startField = new TextField();
       TextField stopField = new TextField();
 
-
       //Add-button
       Button addButton = new Button("Add");
       addButton.setOnAction(
               (arg) -> {
-                  Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                  alert.setTitle("Confirm");
-                  alert.setHeaderText("Add new city");
-                  alert.setContentText("Correct city?");
-                  Optional<ButtonType> answer = alert.showAndWait();
-                  if(answer.isPresent() && answer.get() == ButtonType.OK){
-                      root.setCenter(searchPane);
+                  String textInput = startField.getText();
+
+                  if(textInput == null || textInput.isEmpty()){
+                      Alert error = new Alert(Alert.AlertType.ERROR);
+                      error.setHeaderText("Error");
+                      error.setTitle("Do not put in empty, stupid fuck");
+                      Optional<ButtonType> solution = error.showAndWait();
+                      if(solution.isPresent() && solution.get() == ButtonType.OK){
+                          root.setCenter(searchPane);
+                      }
+
+                  }else{
+                      Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                      alert.setTitle("Confirm");
+                      alert.setHeaderText("Add new city " + startField.getText());
+                      alert.setContentText("Correct city?");
+                      Optional<ButtonType> answer = alert.showAndWait();
+                      if (answer.isPresent() && answer.get() == ButtonType.OK) {
+                          root.setCenter(searchPane);
+                      }
                   }
               });
+
       //Button för dropdown curtain välja stad
       Button buttonShowCities = new Button("Show list of cities");
       buttonShowCities.setOnAction(
@@ -132,22 +146,6 @@ public class Gui extends Application {
     stage.show();
 
   }
-
-  class searchRouteHandler implements EventHandler<ActionEvent>{
-      @Override
-      public void handle(ActionEvent event){
-
-      }
-  }
-
-  class searchHandler implements EventHandler<ActionEvent>{
-      @Override
-      public void handle(ActionEvent event){
-
-      }
-    }
-
-
 
   public static void main(String[] args) {
     launch(args);
