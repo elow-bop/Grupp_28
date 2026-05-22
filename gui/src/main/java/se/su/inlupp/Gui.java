@@ -16,14 +16,14 @@ public class Gui extends Application {
 
   public void start(Stage stage) {
     stage.setTitle("Route Planner");
-    Graph<String> graph = new ListGraph<String>();
+    Graph<String> graph = new ListGraph<String>(); // FRÅGA HANDLEDARE OM VAD DENNA SKA GÖRA
 
     BorderPane root = new BorderPane();
 
     Image background = new Image(Gui.class.getResourceAsStream("/se.su.inlupp/bild.jpg"));
     ImageView backgroundView = new ImageView(background);
 
-    root.setCenter(backgroundView);
+    root.setCenter(backgroundView); //fråga: används denna på alla scener eller hur funkar det? blir det att rooten bara finns på en scen
 
     //Settings
       Pane settingsPane = new Pane();
@@ -31,15 +31,12 @@ public class Gui extends Application {
 
       backgroundLabel.relocate( 200, 100);
 
-      settingsPane.getChildren().add(backgroundLabel);
+      settingsPane.getChildren().addAll(backgroundLabel);
 
 
       //Home-text
       Label homeLabel = new Label ("Home");
 
-    //Search-button
-      Button searchButton = new Button("Search");
-      searchButton.setOnAction(new searchHandler());
 
     //Search-pane
       Pane searchPane = new Pane();
@@ -60,9 +57,13 @@ public class Gui extends Application {
                   Optional<ButtonType> answer = alert.showAndWait();
                   if(answer.isPresent() && answer.get() == ButtonType.OK){
                       root.setCenter(searchPane);
+                      //funderar på vart ni skapat "avbryt" knappen ?
                   }
               });
-      //searchButton.setOnAction(new searchHandler());
+
+      //Search-button
+      Button searchButton = new Button("Search");
+      searchButton.setOnAction(new searchHandler());
 
       start.relocate( 200, 100);
       stop.relocate(200, 200);
@@ -79,7 +80,7 @@ public class Gui extends Application {
     Menu menu = new Menu("Menu");
     MenuBar menuBar = new MenuBar();
     vboxMenu.getChildren().add(menuBar);
-    menuBar.getMenus().add(menu);
+    menuBar.getMenus().add(menu); //varför inte addAll ? funkar inte det här ?
     MenuItem searchRoute = new MenuItem("Search route");
     searchRoute.setOnAction(
             (arg) -> {
@@ -96,7 +97,7 @@ public class Gui extends Application {
                   root.setCenter(backgroundView);
             });
 
-    menu.getItems().addAll(searchRoute, settings, home);
+    menu.getItems().addAll(searchRoute, settings, home); //så här är det inte getChildren?? för att det inte är root eller why
 
     //Stoppa in i root
     root.setTop(vboxMenu);
@@ -110,14 +111,12 @@ public class Gui extends Application {
   class searchRouteHandler implements EventHandler<ActionEvent>{
       @Override
       public void handle(ActionEvent event){
-
       }
   }
-
+//är inte den ovan och den under samma??
   class searchHandler implements EventHandler<ActionEvent>{
       @Override
       public void handle(ActionEvent event){
-
       }
     }
 
