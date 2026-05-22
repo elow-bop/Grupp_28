@@ -12,21 +12,16 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;
 
 import javax.xml.validation.Validator;
+import java.lang.invoke.VarHandle;
 import java.lang.runtime.SwitchBootstraps;
 import java.util.Optional;
 
 public class Gui extends Application {
-  ObservableList<String> cities;
-  ListView<String> listCities = new ListView<>(cities);
+  private ObservableList<String> cities;
+  private ListView<String> listCities = new ListView<>(cities);
 
   public void start(Stage stage) {
-
-    //Läsa in vad användren skriver
-
-
-
-
-    stage.setTitle("Route Planner");
+      stage.setTitle("Route Planner");
     Graph<String> graph = new ListGraph<String>();
 
     BorderPane root = new BorderPane();
@@ -65,10 +60,10 @@ public class Gui extends Application {
               (arg) -> {
                   String textInput = startField.getText();
 
-                  if(textInput == null || textInput.isEmpty()){
+                  if(textInput == null || textInput.isEmpty()){ //här vill vi sen också kolla om staden redan är tillagd eller inte
                       Alert error = new Alert(Alert.AlertType.ERROR);
-                      error.setHeaderText("Error");
-                      error.setTitle("Do not put in empty, stupid fuck");
+                      error.setTitle("Error");
+                      error.setHeaderText("Error: ");
                       Optional<ButtonType> solution = error.showAndWait();
                       if(solution.isPresent() && solution.get() == ButtonType.OK){
                           root.setCenter(searchPane);
@@ -81,6 +76,8 @@ public class Gui extends Application {
                       alert.setContentText("Correct city?");
                       Optional<ButtonType> answer = alert.showAndWait();
                       if (answer.isPresent() && answer.get() == ButtonType.OK) {
+                          graph.add(textInput);
+
                           root.setCenter(searchPane);
                       }
                   }
