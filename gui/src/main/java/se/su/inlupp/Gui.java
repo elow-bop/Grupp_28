@@ -1,6 +1,7 @@
 package se.su.inlupp;
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -10,20 +11,29 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 
+import javax.xml.validation.Validator;
 import java.util.Optional;
 
 public class Gui extends Application {
+  ObservableList<String> cities;
+  ListView<String> listCities = new ListView<>(cities);
 
   public void start(Stage stage) {
+
+    //Läsa in vad användren skriver
+
+
+
     stage.setTitle("Route Planner");
     Graph<String> graph = new ListGraph<String>();
 
     BorderPane root = new BorderPane();
 
+    //Skapa bild
     Image background = new Image(Gui.class.getResourceAsStream("/se.su.inlupp/bild.jpg"));
     ImageView backgroundView = new ImageView(background);
-
-    root.setCenter(backgroundView);
+    ImageView backgroundViewHome = new ImageView(background);
+    ImageView backgroundViewSearch = new ImageView(background);
 
     //Settings
       Pane settingsPane = new Pane();
@@ -31,8 +41,7 @@ public class Gui extends Application {
 
       backgroundLabel.relocate( 200, 100);
 
-      settingsPane.getChildren().add(backgroundLabel);
-
+      settingsPane.getChildren().addAll(backgroundViewHome, backgroundLabel);
 
       //Home-text
       Label homeLabel = new Label ("Home");
@@ -49,6 +58,7 @@ public class Gui extends Application {
       TextField startField = new TextField();
       TextField stopField = new TextField();
 
+
       //Add-button
       Button addButton = new Button("Add");
       addButton.setOnAction(
@@ -62,7 +72,15 @@ public class Gui extends Application {
                       root.setCenter(searchPane);
                   }
               });
+      //Button för dropdown curtain välja stad
+      Button buttonShowCities = new Button("Show list of cities");
+      buttonShowCities.setOnAction(
+              (arg) -> {
+                  searchPane.getChildren().add(listCities);
+              });
+
       //searchButton.setOnAction(new searchHandler());
+      searchPane.getChildren().addAll(backgroundViewSearch, start, stop, startField, stopField, searchButton, addButton, buttonShowCities);
 
       start.relocate( 200, 100);
       stop.relocate(200, 200);
@@ -70,9 +88,12 @@ public class Gui extends Application {
       stopField.relocate(200, 220);
       searchButton.relocate(430, 300);
       addButton.relocate(370, 220);
+      buttonShowCities.relocate(70, 120);
 
+      listCities.setPrefHeight(100);
+      listCities.setPrefWidth(110);
 
-      searchPane.getChildren().addAll(backgroundView, start, stop, startField, stopField, searchButton, addButton);
+      listCities.relocate(70, 145);
 
       //Meny
     VBox vboxMenu = new VBox();
@@ -88,18 +109,23 @@ public class Gui extends Application {
     MenuItem settings = new MenuItem("Settings");
     settings.setOnAction(
             (arg) -> {
-                  root.setCenter(settingsPane);
+                root.setCenter(settingsPane);
             });
     MenuItem home = new MenuItem("Home");
     home.setOnAction(
             (arg) -> {
                   root.setCenter(backgroundView);
             });
-
-    menu.getItems().addAll(searchRoute, settings, home);
+    MenuItem exit = new MenuItem("Exit");
+    exit.setOnAction(
+            (arg) -> {
+                stage.close();
+            });
+    menu.getItems().addAll(searchRoute, settings, home, exit);
 
     //Stoppa in i root
     root.setTop(vboxMenu);
+    root.setCenter(backgroundView);
 
     Scene scene = new Scene(root, 640, 480);
     stage.setScene(scene);
