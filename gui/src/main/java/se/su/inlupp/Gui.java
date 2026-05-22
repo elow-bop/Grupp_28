@@ -4,16 +4,13 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
+
+import java.util.Optional;
 
 public class Gui extends Application {
 
@@ -23,7 +20,7 @@ public class Gui extends Application {
 
     BorderPane root = new BorderPane();
 
-    Image background = new Image(Gui.class.getResourceAsStream("se.su.inlupp/bild.jpg"));
+    Image background = new Image(Gui.class.getResourceAsStream("/se.su.inlupp/bild.jpg"));
     ImageView backgroundView = new ImageView(background);
 
     root.setCenter(backgroundView);
@@ -44,7 +41,7 @@ public class Gui extends Application {
       Button searchButton = new Button("Search");
       searchButton.setOnAction(new searchHandler());
 
-    //Lägga till-pane
+    //Search-pane
       Pane searchPane = new Pane();
       Label start = new Label("Start");
       Label stop = new Label("Stop");
@@ -54,6 +51,17 @@ public class Gui extends Application {
 
       //Add-button
       Button addButton = new Button("Add");
+      addButton.setOnAction(
+              (arg) -> {
+                  Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                  alert.setTitle("Confirm");
+                  alert.setHeaderText("Add new city");
+                  alert.setContentText("Correct city?");
+                  Optional<ButtonType> answer = alert.showAndWait();
+                  if(answer.isPresent() && answer.get() == ButtonType.OK){
+                      root.setCenter(searchPane);
+                  }
+              });
       //searchButton.setOnAction(new searchHandler());
 
       start.relocate( 200, 100);
@@ -64,7 +72,7 @@ public class Gui extends Application {
       addButton.relocate(370, 220);
 
 
-      searchPane.getChildren().addAll(start, stop, startField, stopField, searchButton, addButton);
+      searchPane.getChildren().addAll(backgroundView, start, stop, startField, stopField, searchButton, addButton);
 
       //Meny
     VBox vboxMenu = new VBox();
@@ -85,14 +93,13 @@ public class Gui extends Application {
     MenuItem home = new MenuItem("Home");
     home.setOnAction(
             (arg) -> {
-                  root.setCenter(homeLabel);
+                  root.setCenter(backgroundView);
             });
 
     menu.getItems().addAll(searchRoute, settings, home);
 
     //Stoppa in i root
     root.setTop(vboxMenu);
-    root.setCenter(homeLabel);
 
     Scene scene = new Scene(root, 640, 480);
     stage.setScene(scene);
