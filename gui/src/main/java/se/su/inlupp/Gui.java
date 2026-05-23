@@ -22,7 +22,7 @@ public class Gui extends Application {
   public void start(Stage stage) {
     stage.setTitle("Route Planner");
     ObservableList<String> cities = FXCollections.observableArrayList("Test", "Test2", "Test3");
-    ListView<String> listViewCities = new ListView<>(cities);
+    ListView<String> listCities = new ListView<>(cities);
     
     Graph<String> graph = new ListGraph<String>();
 
@@ -89,7 +89,7 @@ public class Gui extends Application {
       Button buttonShowCities = new Button("Show list of cities");
       buttonShowCities.setOnAction(
               (arg) -> {
-                  searchPane.getChildren().add(listViewCities);
+                  searchPane.getChildren().add(listCities);
               });
 
       //searchButton.setOnAction(new searchHandler());
@@ -103,10 +103,10 @@ public class Gui extends Application {
       addButton.relocate(370, 220);
       buttonShowCities.relocate(70, 120);
 
-      listViewCities.setPrefHeight(100);
-      listViewCities.setPrefWidth(110);
+      listCities.setPrefHeight(100);
+      listCities.setPrefWidth(110);
 
-      listViewCities.relocate(70, 145);
+      listCities.relocate(70, 145);
 
       //Meny
     VBox vboxMenu = new VBox();
