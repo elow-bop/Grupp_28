@@ -21,8 +21,11 @@ public class Gui extends Application {
 
   public void start(Stage stage) {
     stage.setTitle("Route Planner");
-    ObservableList<String> cities = FXCollections.observableArrayList("Test", "Test2", "Test3");
+    ObservableList<String> cities = FXCollections.observableArrayList();
     ListView<String> listCities = new ListView<>(cities);
+
+    // denna verkar inte funka!?!!? arrghhhh
+    listCities.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     
     Graph<String> graph = new ListGraph<String>();
 
@@ -61,6 +64,7 @@ public class Gui extends Application {
       addButton.setOnAction(
               (arg) -> {
                   String textInput = startField.getText();
+                  startField.clear();
 
                   if(textInput == null || textInput.isEmpty()){ //här vill vi sen också kolla om staden redan är tillagd eller inte
                       Alert error = new Alert(Alert.AlertType.ERROR);
@@ -74,34 +78,56 @@ public class Gui extends Application {
                   }else{
                       Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                       alert.setTitle("Confirm");
-                      alert.setHeaderText("Add new city " + startField.getText());
+                      alert.setHeaderText("Add new city \"" + textInput + "\"");
                       alert.setContentText("Correct city?");
                       Optional<ButtonType> answer = alert.showAndWait();
                       if (answer.isPresent() && answer.get() == ButtonType.OK) {
                           graph.add(textInput);
-
+                          cities.add(textInput);
                           root.setCenter(searchPane);
                       }
                   }
               });
 
-      //Button för dropdown curtain välja stad
-      Button buttonShowCities = new Button("Show list of cities");
-      buttonShowCities.setOnAction(
+      //removeButton
+      Button removeButton = new Button("remove from list");
+      removeButton.setOnAction(
               (arg) -> {
-                  searchPane.getChildren().add(listCities);
+                  String selected = listCities.getSelectionModel().getSelectedItem();
+                  cities.remove(selected);
+                  graph.remove(selected);
+              });
+
+      //addConnection
+      Button addConnectionButton = new Button("add connection");
+      addConnectionButton.setOnAction(
+              (arg) -> {
+                  String selected = listCities.getSelectionModel().getSelectedItem();
+
+                  Alert addConnectionConfirmation = new Alert(Alert.AlertType.CONFIRMATION);
+                  addConnectionConfirmation.setTitle("Confirm");
+                  addConnectionConfirmation.setHeaderText("Add connection between " + selected + " and x");
+                  addConnectionConfirmation.setContentText("Correct connection?");
+                  Optional<ButtonType> answer1 = addConnectionConfirmation.showAndWait();
+                  if (answer1.isPresent() && answer1.get() == ButtonType.OK) {
+                      // koppla ihop två noder graph.connect(selected,x )
+                      root.setCenter(searchPane);
+                  }
+
               });
 
       //searchButton.setOnAction(new searchHandler());
-      searchPane.getChildren().addAll(backgroundViewSearch, start, stop, startField, stopField, searchButton, addButton, buttonShowCities);
+      searchPane.getChildren().addAll(backgroundViewSearch, start, stop, startField, stopField, searchButton, addButton,
+              removeButton, addConnectionButton, listCities);
 
       start.relocate( 200, 100);
       stop.relocate(200, 200);
       startField.relocate(200, 120);
       stopField.relocate(200, 220);
       searchButton.relocate(430, 300);
-      addButton.relocate(370, 220);
-      buttonShowCities.relocate(70, 120);
+      addButton.relocate(370, 120);
+      removeButton.relocate(70, 250);
+      addConnectionButton.relocate(70, 280);
 
       listCities.setPrefHeight(100);
       listCities.setPrefWidth(110);
@@ -143,7 +169,6 @@ public class Gui extends Application {
     Scene scene = new Scene(root, 735, 490);
     stage.setScene(scene);
     stage.show();
-
   }
 
   public static void main(String[] args) {
