@@ -1,6 +1,7 @@
 package se.su.inlupp;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,11 +18,12 @@ import java.lang.runtime.SwitchBootstraps;
 import java.util.Optional;
 
 public class Gui extends Application {
-  private ObservableList<String> cities;
-  private ListView<String> listCities = new ListView<>(cities);
 
   public void start(Stage stage) {
-      stage.setTitle("Route Planner");
+    stage.setTitle("Route Planner");
+    ObservableList<String> cities = FXCollections.observableArrayList("Test", "Test2", "Test3");
+    ListView<String> listViewCities = new ListView<>(cities);
+    
     Graph<String> graph = new ListGraph<String>();
 
     BorderPane root = new BorderPane();
@@ -87,7 +89,7 @@ public class Gui extends Application {
       Button buttonShowCities = new Button("Show list of cities");
       buttonShowCities.setOnAction(
               (arg) -> {
-                  searchPane.getChildren().add(listCities);
+                  searchPane.getChildren().add(listViewCities);
               });
 
       //searchButton.setOnAction(new searchHandler());
@@ -101,10 +103,10 @@ public class Gui extends Application {
       addButton.relocate(370, 220);
       buttonShowCities.relocate(70, 120);
 
-      listCities.setPrefHeight(100);
-      listCities.setPrefWidth(110);
+      listViewCities.setPrefHeight(100);
+      listViewCities.setPrefWidth(110);
 
-      listCities.relocate(70, 145);
+      listViewCities.relocate(70, 145);
 
       //Meny
     VBox vboxMenu = new VBox();
@@ -138,7 +140,7 @@ public class Gui extends Application {
     root.setTop(vboxMenu);
     root.setCenter(backgroundView);
 
-    Scene scene = new Scene(root, 640, 480);
+    Scene scene = new Scene(root, 735, 490);
     stage.setScene(scene);
     stage.show();
 
