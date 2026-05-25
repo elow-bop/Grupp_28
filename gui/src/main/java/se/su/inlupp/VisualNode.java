@@ -1,24 +1,22 @@
 package se.su.inlupp;
 
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 
-public class VisualNode extends VBox {
-    private Label nameLabel;
-    private Circle circle;
+public class VisualNode extends BorderPane {
 
-    public VisualNode(String name){
-        this.nameLabel = new Label(name);
-        this.circle = new Circle(300);
-        circle.setFill(Color.AQUA);
-        nameLabel.relocate(100, 100);
+    public VisualNode(String name, double x, double y) {
+        relocate(x,y);
+        TextArea nodeName = new TextArea();
+        setCenter(nodeName);
+        setPrefSize(200, 200);
+        this.setBackground(Background.fill(Color.AQUA));
 
-        this.setShape(circle);
 
-        this.getChildren().addAll(circle, nameLabel);
+
     }
-
 }

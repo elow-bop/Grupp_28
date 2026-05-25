@@ -59,9 +59,14 @@ public class Gui extends Application {
       Button searchButton = new Button("Search");
       searchButton.setOnAction(
               (arg) -> {
+                  int x = 100;
+                  int y = 100;
+
                   for(String node : graph.getNodes()){
-                      VisualNode test = new VisualNode(node);
-                      routePane.getChildren().add(test);
+                      routePane.getChildren().add(new VisualNode(node,x,y));
+
+                      x+= 30;
+                      y+= 30;
                   }
                   root.setCenter(routePane);
               });
