@@ -173,6 +173,7 @@ class PathClass<T> implements Path<T>{
         }
         return totalWeight;
     }
+
     //måste vi inte returnera en unmodifiable, eller loopa igenom? eller en referens? kan inte...
     public List<Edge<T>> getEdges(){
         return path;

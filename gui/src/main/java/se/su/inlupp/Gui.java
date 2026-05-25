@@ -15,19 +15,20 @@ public class Gui extends Application {
 
   public void start(Stage stage) {
     stage.setTitle("Route Planner");
+
+    //List-vyn
     ObservableList<String> cities = FXCollections.observableArrayList();
     ListView<String> listCities = new ListView<>(cities);
-
     listCities.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
     //Connection
     HBox connectionPane = new HBox();
     TextField connectionName = new TextField();
-      TextField connectionDistance = new TextField();
+    TextField connectionDistance = new TextField();
 
-      connectionPane.getChildren().addAll(connectionName, connectionDistance);
+    connectionPane.getChildren().addAll(connectionName, connectionDistance);
 
-      Graph<String> graph = new ListGraph<String>();
+    Graph<String> graph = new ListGraph<String>();
 
     BorderPane root = new BorderPane();
 
@@ -57,15 +58,6 @@ public class Gui extends Application {
       Button searchButton = new Button("Search");
       searchButton.setOnAction(
               (arg) -> {
-                  int x = 100;
-                  int y = 100;
-
-                  for(String node : graph.getNodes()){
-                      routePane.getChildren().add(new VisualNode(node,x,y));
-                      x+= 30;
-                      y+= 30;
-
-                  }
                   root.setCenter(routePane);
               });
 
@@ -94,6 +86,7 @@ public class Gui extends Application {
                       if (answer.isPresent() && answer.get() == ButtonType.OK) {
                           graph.add(textInput);
                           cities.add(textInput);
+                          routePane.getChildren().add(new VisualNode(textInput,100,100));
                           root.setCenter(searchPane);
                       }
                   }
