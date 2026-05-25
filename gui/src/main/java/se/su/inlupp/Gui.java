@@ -47,14 +47,12 @@ public class Gui extends Application {
 
     //Search-pane
       Pane searchPane = new Pane();
-      Label start = new Label("Start");
+      Label start = new Label("Add city");
 
       TextField startField = new TextField();
 
-
-      //Search-button
-      //skapa scen för att visa noderna och vägar mellan:
-      FlowPane routePane = new FlowPane();
+      //Search: skapa scen för att visa noderna och vägar mellan:
+      Pane routePane = new Pane();
 
       Button searchButton = new Button("Search");
       searchButton.setOnAction(
@@ -67,6 +65,7 @@ public class Gui extends Application {
 
                       x+= 30;
                       y+= 30;
+
                   }
                   root.setCenter(routePane);
               });
