@@ -3,6 +3,8 @@ package se.su.inlupp;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -10,13 +12,17 @@ import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
+import javafx.stage.WindowEvent;
 
 import java.io.File;
 import java.util.Optional;
 
 public class Gui extends Application {
+    private boolean hasChanges = true;
+    //vi måste sätta denna till true efter varje metod. Förutom spara då
+    //den ska återställas till false; True nu för att testa :)
 
-  public void start(Stage stage) {
+    public void start(Stage stage) {
     stage.setTitle("Route Planner");
     ObservableList<String> cities = FXCollections.observableArrayList();
     ListView<String> listCities = new ListView<>(cities);
@@ -85,6 +91,7 @@ public class Gui extends Application {
                   }
                   root.setCenter(routePane);
               });
+
 
       //Add-button
       Button addButton = new Button("Add");
@@ -202,9 +209,26 @@ public class Gui extends Application {
     MenuItem exit = new MenuItem("Exit");
     exit.setOnAction(
             (arg) -> {
+                if(hasChanges) {
+                    stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+                    }
                 stage.close();
             });
+    stage.setOnCloseRequest(event -> {
+        if(hasChanges) {
+            Alert error = new Alert(Alert.AlertType.CONFIRMATION);
+            error.setTitle("New Data Not Saved");
+            error.setHeaderText("Close anyway? ");
+            Optional<ButtonType> solution = error.showAndWait();
+            if(solution.isPresent() && solution.get() == ButtonType.OK){
+                stage.close();
+            }else{
+                event.consume();
+            }
+    }
+            });
     menu.getItems().addAll(searchRoute, settings, home, save, exit);
+
 
 
     //Stoppa in i root
