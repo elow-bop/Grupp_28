@@ -18,7 +18,6 @@ public class VisualNode extends BorderPane {
         //hanterare som hanterar om vi drar musen
         setOnMouseDragged(new DragHandler());
 
-
     }
     class DragHandler implements EventHandler<MouseEvent> {
         public void handle(MouseEvent event){
