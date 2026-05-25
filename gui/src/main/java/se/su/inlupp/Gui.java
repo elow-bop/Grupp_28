@@ -7,8 +7,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
+
+import java.io.File;
 import java.util.Optional;
 
 public class Gui extends Application {
@@ -153,6 +156,7 @@ public class Gui extends Application {
     MenuBar menuBar = new MenuBar();
     vboxMenu.getChildren().add(menuBar);
     menuBar.getMenus().add(menu);
+    FileChooser fileChooser = new FileChooser();
     MenuItem searchRoute = new MenuItem("Search route");
     searchRoute.setOnAction(
             (arg) -> {
@@ -168,12 +172,24 @@ public class Gui extends Application {
             (arg) -> {
                   root.setCenter(backgroundView);
             });
+    MenuItem open = new MenuItem("Open");
+      open.setOnAction(
+              (arg) -> {
+                  File openFile = fileChooser.showOpenDialog(stage);
+                  System.out.println(openFile);
+              });
+      MenuItem save = new MenuItem("Save");
+      save.setOnAction(
+              (arg) -> {
+                  stage.close();
+              });
     MenuItem exit = new MenuItem("Exit");
     exit.setOnAction(
             (arg) -> {
                 stage.close();
             });
-    menu.getItems().addAll(searchRoute, settings, home, exit);
+    menu.getItems().addAll(searchRoute, settings, home, exit, save, open);
+
 
     //Stoppa in i root
     root.setTop(vboxMenu);
