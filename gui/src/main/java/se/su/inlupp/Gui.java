@@ -3,18 +3,12 @@ package se.su.inlupp;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
-
-import javax.xml.validation.Validator;
-import java.lang.invoke.VarHandle;
-import java.lang.runtime.SwitchBootstraps;
 import java.util.Optional;
 
 public class Gui extends Application {
@@ -24,9 +18,9 @@ public class Gui extends Application {
     ObservableList<String> cities = FXCollections.observableArrayList();
     ListView<String> listCities = new ListView<>(cities);
 
-    // denna verkar inte funka!?!!? arrghhhh
     listCities.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
+    //Connection
     HBox connectionPane = new HBox();
     TextField connectionName = new TextField();
       TextField connectionDistance = new TextField();
@@ -51,19 +45,26 @@ public class Gui extends Application {
 
       settingsPane.getChildren().addAll(backgroundViewHome, backgroundLabel);
 
-      //Home-text
-      Label homeLabel = new Label ("Home");
-
-    //Search-button
-      Button searchButton = new Button("Search");
-
     //Search-pane
       Pane searchPane = new Pane();
       Label start = new Label("Start");
-      Label stop = new Label("Stop");
 
       TextField startField = new TextField();
-      TextField stopField = new TextField();
+
+
+      //Search-button
+      //skapa scen för att visa noderna och vägar mellan:
+      FlowPane routePane = new FlowPane();
+
+      Button searchButton = new Button("Search");
+      searchButton.setOnAction(
+              (arg) -> {
+                  for(String node : graph.getNodes()){
+                      VisualNode test = new VisualNode(node);
+                      routePane.getChildren().add(test);
+                  }
+                  root.setCenter(routePane);
+              });
 
       //Add-button
       Button addButton = new Button("Add");
@@ -112,31 +113,34 @@ public class Gui extends Application {
 
                   TextInputDialog addConnectionConfirmation = new TextInputDialog("Confirm");
                   addConnectionConfirmation.setTitle("Confirm");
-                  addConnectionConfirmation.setHeaderText("Add connection between " + selected.get(0) + " and " + selected.get(1) + "while here, also enter name and distance");
+                  addConnectionConfirmation.setHeaderText("Add connection between " + selected.get(0) + " and " +
+                          selected.get(1) + "while here, also enter name and distance");
                   addConnectionConfirmation.setContentText("Name");
                   addConnectionConfirmation.setContentText("Distance?");
                   addConnectionConfirmation.getDialogPane().setContent(connectionPane);
 
-                  Optional<ButtonType> result = addConnectionConfirmation.showAndWait();
+                  Optional<String> result = addConnectionConfirmation.showAndWait();
 
-                  selected.clear();
-                  if (result.isPresent() && result.get() == ButtonType.OK) {
+                  if (result.isPresent()) {
                       //koppla ihop två noder graph.connect(selected,x )
-                      int distance = Integer.parseInt(connectionDistance.getText();
+                      int distance = Integer.parseInt(connectionDistance.getText());
                       graph.connect(selected.get(0), selected.get(1), connectionName.getText(), distance);
+
+                      System.out.print(graph.getEdgeBetween(selected.get(0), selected.get(1)));
+
+                      selected.clear();
+
                       root.setCenter(searchPane);
                   }
 
               });
 
       //searchButton.setOnAction(new searchHandler());
-      searchPane.getChildren().addAll(backgroundViewSearch, start, stop, startField, stopField, searchButton, addButton,
+      searchPane.getChildren().addAll(backgroundViewSearch, start, startField, searchButton, addButton,
               removeButton, addConnectionButton, listCities);
 
       start.relocate( 200, 100);
-      stop.relocate(200, 200);
       startField.relocate(200, 120);
-      stopField.relocate(200, 220);
       searchButton.relocate(430, 300);
       addButton.relocate(370, 120);
       removeButton.relocate(70, 250);
