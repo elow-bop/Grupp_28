@@ -26,8 +26,14 @@ public class Gui extends Application {
 
     // denna verkar inte funka!?!!? arrghhhh
     listCities.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-    
-    Graph<String> graph = new ListGraph<String>();
+
+    HBox connectionPane = new HBox();
+    TextField connectionName = new TextField();
+      TextField connectionDistance = new TextField();
+
+      connectionPane.getChildren().addAll(connectionName, connectionDistance);
+
+      Graph<String> graph = new ListGraph<String>();
 
     BorderPane root = new BorderPane();
 
@@ -102,15 +108,22 @@ public class Gui extends Application {
       Button addConnectionButton = new Button("add connection");
       addConnectionButton.setOnAction(
               (arg) -> {
-                  String selected = listCities.getSelectionModel().getSelectedItem();
+                  ObservableList<String> selected = listCities.getSelectionModel().getSelectedItems();
 
-                  Alert addConnectionConfirmation = new Alert(Alert.AlertType.CONFIRMATION);
+                  TextInputDialog addConnectionConfirmation = new TextInputDialog("Confirm");
                   addConnectionConfirmation.setTitle("Confirm");
-                  addConnectionConfirmation.setHeaderText("Add connection between " + selected + " and x");
-                  addConnectionConfirmation.setContentText("Correct connection?");
-                  Optional<ButtonType> answer1 = addConnectionConfirmation.showAndWait();
-                  if (answer1.isPresent() && answer1.get() == ButtonType.OK) {
-                      // koppla ihop två noder graph.connect(selected,x )
+                  addConnectionConfirmation.setHeaderText("Add connection between " + selected.get(0) + " and " + selected.get(1) + "while here, also enter name and distance");
+                  addConnectionConfirmation.setContentText("Name");
+                  addConnectionConfirmation.setContentText("Distance?");
+                  addConnectionConfirmation.getDialogPane().setContent(connectionPane);
+
+                  Optional<ButtonType> result = addConnectionConfirmation.showAndWait();
+
+                  selected.clear();
+                  if (result.isPresent() && result.get() == ButtonType.OK) {
+                      //koppla ihop två noder graph.connect(selected,x )
+                      int distance = Integer.parseInt(connectionDistance.getText();
+                      graph.connect(selected.get(0), selected.get(1), connectionName.getText(), distance);
                       root.setCenter(searchPane);
                   }
 
