@@ -43,10 +43,23 @@ public class Gui extends Application {
     //Settings
       Pane settingsPane = new Pane();
       Label backgroundLabel = new Label("Change background");
+      Button upload = new Button("Upload file");
+      upload.setOnAction(
+              (arg) -> {
+                  FileChooser fileChooser = new FileChooser();
+                  File openFile = fileChooser.showOpenDialog(stage);
+                  if(openFile != null && openFile.exists()){
+                      Image newBackground = new Image(openFile.toURI().toString());
+                      backgroundView.setImage(newBackground);
+                      backgroundViewHome.setImage(newBackground);
+                      backgroundViewSearch.setImage(newBackground);
+                  }
+              });
 
       backgroundLabel.relocate( 200, 100);
+      upload.relocate(200, 130);
 
-      settingsPane.getChildren().addAll(backgroundViewHome, backgroundLabel);
+      settingsPane.getChildren().addAll(backgroundViewHome, backgroundLabel, upload);
 
     //Search-pane
       Pane searchPane = new Pane();
@@ -180,12 +193,6 @@ public class Gui extends Application {
             (arg) -> {
                   root.setCenter(backgroundView);
             });
-    MenuItem open = new MenuItem("Open");
-      open.setOnAction(
-              (arg) -> {
-                  File openFile = fileChooser.showOpenDialog(stage);
-                  System.out.println(openFile);
-              });
       MenuItem save = new MenuItem("Save");
       save.setOnAction(
               (arg) -> {
@@ -197,7 +204,7 @@ public class Gui extends Application {
             (arg) -> {
                 stage.close();
             });
-    menu.getItems().addAll(searchRoute, settings, home, open, save, exit);
+    menu.getItems().addAll(searchRoute, settings, home, save, exit);
 
 
     //Stoppa in i root
