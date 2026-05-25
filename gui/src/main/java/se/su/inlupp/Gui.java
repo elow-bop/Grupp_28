@@ -110,24 +110,25 @@ public class Gui extends Application {
       addConnectionButton.setOnAction(
               (arg) -> {
                   ObservableList<String> selected = listCities.getSelectionModel().getSelectedItems();
+                  String node1 = selected.get(0);
+                  String node2 = selected.get(1);
 
-                  TextInputDialog addConnectionConfirmation = new TextInputDialog("Confirm");
-                  addConnectionConfirmation.setTitle("Confirm");
-                  addConnectionConfirmation.setHeaderText("Add connection between " + selected.get(0) + " and " +
-                          selected.get(1) + "while here, also enter name and distance");
-                  addConnectionConfirmation.setContentText("Name");
-                  addConnectionConfirmation.setContentText("Distance?");
-                  addConnectionConfirmation.getDialogPane().setContent(connectionPane);
+                  TextInputDialog addConnectionDialog = new TextInputDialog("Confirm");
+                  addConnectionDialog.setTitle("Confirm");
+                  addConnectionDialog.setHeaderText("Add connection between " + node1 + " and " +
+                          node2 + "while here, also enter name and distance");
+                  addConnectionDialog.setContentText("Name");
+                  addConnectionDialog.setContentText("Distance?");
+                  addConnectionDialog.getDialogPane().setContent(connectionPane);
 
-                  Optional<String> result = addConnectionConfirmation.showAndWait();
+                  Optional<String> result = addConnectionDialog.showAndWait();
 
                   if (result.isPresent()) {
                       //koppla ihop två noder graph.connect(selected,x )
                       int distance = Integer.parseInt(connectionDistance.getText());
 
-                      controller.addConnection(selected.get(0), selected.get(1), connectionName.getText(), distance);
-
-//                    routePane.getChildren().add(new VisualEdge(selected.get(0), selected.get(1) );
+                      controller.addConnection(node1, node2, connectionName.getText(), distance);
+                      routePane.getChildren().add(new VisualEdge(controller.getVisualNode(node1), controller.getVisualNode(node2)));
 
                       selected.clear();
                       root.setCenter(searchPane);

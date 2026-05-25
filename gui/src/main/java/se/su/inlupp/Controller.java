@@ -29,8 +29,11 @@ public class Controller {
 
     public VisualNode getVisualNode(String name){
         for(VisualNode visualNode : visualNodes){
-            if(visualNode.get)
+            if(visualNode.getName().equals(name)){
+                return visualNode;
+            }
         }
+        return null;
     }
 }
 
