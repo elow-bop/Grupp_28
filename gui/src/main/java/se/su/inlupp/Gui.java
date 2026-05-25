@@ -185,19 +185,19 @@ public class Gui extends Application {
               (arg) -> {
                   File openFile = fileChooser.showOpenDialog(stage);
                   System.out.println(openFile);
-                  //hej
               });
       MenuItem save = new MenuItem("Save");
       save.setOnAction(
               (arg) -> {
-                  stage.close();
+                  File saveFile = fileChooser.showSaveDialog(stage);
+                  System.out.println(saveFile);
               });
     MenuItem exit = new MenuItem("Exit");
     exit.setOnAction(
             (arg) -> {
                 stage.close();
             });
-    menu.getItems().addAll(searchRoute, settings, home, exit, save, open);
+    menu.getItems().addAll(searchRoute, settings, home, open, save, exit);
 
 
     //Stoppa in i root
