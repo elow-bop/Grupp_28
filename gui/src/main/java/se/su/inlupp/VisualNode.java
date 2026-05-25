@@ -9,9 +9,15 @@ import javafx.scene.paint.Color;
 
 public class VisualNode extends BorderPane {
     private String name;
+    private double x;
+    private double y;
+
     public VisualNode(String name, double x, double y) {
-        this.name = name;
         relocate(x,y);
+        this.name = name;
+        this.x = x;
+        this.y = y;
+
         Label nodeName = new Label(name);
         setCenter(nodeName);
         setPrefSize(50, 50);
@@ -24,11 +30,21 @@ public class VisualNode extends BorderPane {
     public String getName(){
         return name;
     }
+
+    public double coordinateX(){
+        return x;
+    }
+    public double coordinateY(){
+        return y;
+    }
+
     class DragHandler implements EventHandler<MouseEvent> {
         public void handle(MouseEvent event){
             double newX = getLayoutX() + event.getX();
             double newY = getLayoutY() + event.getY();
             relocate(newX, newY);
+            x = newX;
+            y = newY;
         }
     }
 }
