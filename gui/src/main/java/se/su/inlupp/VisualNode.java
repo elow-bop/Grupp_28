@@ -11,10 +11,10 @@ public class VisualNode extends BorderPane {
 
     public VisualNode(String name, double x, double y) {
         relocate(x,y);
-        TextArea nodeName = new TextArea();
+        Label nodeName = new Label(name);
         setCenter(nodeName);
         setPrefSize(200, 200);
-        this.setBackground(Background.fill(Color.AQUA));
+        this.setBackground(Background.fill(Color.ORANGE));
 
 
 
