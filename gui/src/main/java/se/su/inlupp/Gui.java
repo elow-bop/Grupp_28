@@ -62,7 +62,6 @@ public class Gui extends Application {
 
                   for(String node : graph.getNodes()){
                       routePane.getChildren().add(new VisualNode(node,x,y));
-
                       x+= 30;
                       y+= 30;
 
