@@ -185,6 +185,7 @@ public class Gui extends Application {
               (arg) -> {
                   File openFile = fileChooser.showOpenDialog(stage);
                   System.out.println(openFile);
+                  //hej
               });
       MenuItem save = new MenuItem("Save");
       save.setOnAction(
