@@ -12,7 +12,9 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 public class Gui extends Application {
 
@@ -31,8 +33,6 @@ public class Gui extends Application {
     TextField connectionDistance = new TextField();
 
     connectionPane.getChildren().addAll(connectionName, connectionDistance);
-
-    Graph<String> graph = new ListGraph<String>();
 
     BorderPane root = new BorderPane();
 
@@ -91,7 +91,8 @@ public class Gui extends Application {
                           controller.addNode(textInput);
                           cities.add(textInput);
 
-                          routePane.getChildren().add(new VisualNode(textInput,100,100));
+                          routePane.getChildren().add(controller.addVisualNode(textInput));
+
                           root.setCenter(searchPane);
                       }
                   }
@@ -103,7 +104,7 @@ public class Gui extends Application {
               (arg) -> {
                   String selected = listCities.getSelectionModel().getSelectedItem();
                   cities.remove(selected);
-                  graph.remove(selected);
+                  controller.removeNode(selected);
               });
 
       //addConnection
@@ -125,9 +126,10 @@ public class Gui extends Application {
                   if (result.isPresent()) {
                       //koppla ihop två noder graph.connect(selected,x )
                       int distance = Integer.parseInt(connectionDistance.getText());
-                      graph.connect(selected.get(0), selected.get(1), connectionName.getText(), distance);
 
-                      routePane.getChildren().add(new VisualEdge(selected.get(0), selected.get(1) );
+                      controller.addConnection(selected.get(0), selected.get(1), connectionName.getText(), distance);
+
+//                    routePane.getChildren().add(new VisualEdge(selected.get(0), selected.get(1) );
 
                       selected.clear();
                       root.setCenter(searchPane);
@@ -135,7 +137,6 @@ public class Gui extends Application {
 
               });
 
-      //searchButton.setOnAction(new searchHandler());
       searchPane.getChildren().addAll(backgroundViewSearch, start, startField, searchButton, addButton,
               removeButton, addConnectionButton, listCities);
 
