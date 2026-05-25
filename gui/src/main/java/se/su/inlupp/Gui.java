@@ -18,6 +18,7 @@ public class Gui extends Application {
 
   public void start(Stage stage) {
     stage.setTitle("Route Planner");
+    Controller controller = new Controller();
 
     //List-vyn
     ObservableList<String> cities = FXCollections.observableArrayList();
@@ -87,8 +88,9 @@ public class Gui extends Application {
                       alert.setContentText("Correct city?");
                       Optional<ButtonType> answer = alert.showAndWait();
                       if (answer.isPresent() && answer.get() == ButtonType.OK) {
-                          graph.add(textInput);
+                          controller.addNode(textInput);
                           cities.add(textInput);
+
                           routePane.getChildren().add(new VisualNode(textInput,100,100));
                           root.setCenter(searchPane);
                       }
@@ -125,10 +127,9 @@ public class Gui extends Application {
                       int distance = Integer.parseInt(connectionDistance.getText());
                       graph.connect(selected.get(0), selected.get(1), connectionName.getText(), distance);
 
-                      System.out.print(graph.getEdgeBetween(selected.get(0), selected.get(1)));
+                      routePane.getChildren().add(new VisualEdge(selected.get(0), selected.get(1) );
 
                       selected.clear();
-
                       root.setCenter(searchPane);
                   }
 
