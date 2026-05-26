@@ -57,20 +57,26 @@ public class Gui extends Application {
       //Search: skapa scen för att visa noderna och vägar mellan:
       Pane routePane = new Pane();
 
-      Button showConnection = new Button("Show connection");
-      showConnection.setOnAction(
+      Button showDFS = new Button("Show connection DFS");
+      showDFS.setOnAction(
+              (arg) -> {
+                  controller.pathFinderDFS();
+              });
+
+      Button showBFS = new Button("Show connection BFS");
+      showBFS.setOnAction(
               (arg) -> {
 
               });
 
-      routePane.getChildren().add(showConnection);
-      showConnection.relocate(400, 400);
+      routePane.getChildren().addAll(showDFS, showBFS);
+      showDFS.relocate(300, 300);
+      showBFS.relocate(400, 400);
 
       Button searchButton = new Button("Search");
       searchButton.setOnAction(
               (arg) -> {
                   root.setCenter(routePane);
-
               });
 
       //Add-button

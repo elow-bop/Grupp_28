@@ -1,6 +1,7 @@
 package se.su.inlupp;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 
 public class Controller {
@@ -30,6 +31,18 @@ public class Controller {
             }
         }
         return null;
+    }
+
+    public void pathFinderDFS(String startNode, String endNode){
+        DFSPathFinder pathFinder = new DFSPathFinder();
+        Path<String> path = pathFinder.findPath(graph, startNode, endNode);
+
+
+    }
+
+    public void pathFinderBFS(String startNode, String endNode ){
+        BFSPathFinder pathFinder = new BFSPathFinder();
+        pathFinder.findPath(graph, startNode, endNode);
     }
 
 
