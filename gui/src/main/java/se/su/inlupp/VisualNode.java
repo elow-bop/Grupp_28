@@ -22,7 +22,7 @@ public class VisualNode extends BorderPane {
         setBackground(Background.fill(Color.AQUA));
 
         setOnMouseDragged(new DragHandler());
-        setOnMousePressed(new StartDragHandler);
+        setOnMousePressed(new StartDragHandler());
         setOnMouseClicked(new ClickHandler());
     }
 
@@ -40,8 +40,8 @@ public class VisualNode extends BorderPane {
 
     class DragHandler implements EventHandler<MouseEvent> {
         public void handle(MouseEvent event){
-            double newX = getLayoutX() + event.getX();
-            double newY = getLayoutY() + event.getY();
+            double newX = getLayoutX() + event.getX() - startX;
+            double newY = getLayoutY() + event.getY() - startY;
             relocate(newX, newY);
         }
     }
