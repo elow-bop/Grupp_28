@@ -30,7 +30,7 @@ public class Gui extends Application {
 
     listCities.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-    //Connection
+    //Connection hej
     HBox connectionPane = new HBox();
     TextField connectionName = new TextField();
       TextField connectionDistance = new TextField();
