@@ -33,16 +33,15 @@ public class Controller {
         return null;
     }
 
-    public void pathFinderDFS(String startNode, String endNode){
+    public Path<String> pathFinderDFS(String startNode, String endNode){
         DFSPathFinder pathFinder = new DFSPathFinder();
-        Path<String> path = pathFinder.findPath(graph, startNode, endNode);
-
+        return pathFinder.findPath(graph, startNode, endNode);
 
     }
 
-    public void pathFinderBFS(String startNode, String endNode ){
+    public Path<String> pathFinderBFS(String startNode, String endNode ){
         BFSPathFinder pathFinder = new BFSPathFinder();
-        pathFinder.findPath(graph, startNode, endNode);
+        return pathFinder.findPath(graph, startNode, endNode);
     }
 
 

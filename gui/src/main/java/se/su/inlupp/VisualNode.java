@@ -21,9 +21,21 @@ public class VisualNode extends BorderPane {
         setPrefSize(50, 50);
         setBackground(Background.fill(Color.AQUA));
 
+        setFocusTraversable(true);
+
         setOnMouseDragged(new DragHandler());
         setOnMousePressed(new StartDragHandler());
         setOnMouseClicked(new ClickHandler());
+
+        focusedProperty().addListener((observable, wasFocused, isNowFocused) -> {
+            if (isNowFocused) {
+                // What happens when SELECTED
+                setBackground(Background.fill(Color.ORANGE));
+            } else {
+                // What happens when DESELECTED
+                setBackground(Background.fill(Color.AQUA));
+            }
+        });
     }
 
     public String getName(){
@@ -48,8 +60,7 @@ public class VisualNode extends BorderPane {
 
     class ClickHandler implements EventHandler<MouseEvent>{
         public void handle(MouseEvent event){
-            Label selected = new Label("SELECTED");
-            setRight(selected);
+            requestFocus();
         }
     }
 

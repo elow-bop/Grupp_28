@@ -60,7 +60,8 @@ public class Gui extends Application {
       Button showDFS = new Button("Show connection DFS");
       showDFS.setOnAction(
               (arg) -> {
-                  controller.pathFinderDFS();
+
+//                  Path<String> pathDFS = controller.pathFinderDFS();
               });
 
       Button showBFS = new Button("Show connection BFS");
