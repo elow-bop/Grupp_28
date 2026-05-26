@@ -211,6 +211,7 @@ public class Gui extends Application {
                             BufferedReader reader = new BufferedReader(fileReader);
 
                             //logik för att läsa in det från filen till en map
+                            //ska läsa in bild också.
 
                             reader.close();
 
@@ -236,6 +237,7 @@ public class Gui extends Application {
                           BufferedWriter writer = new BufferedWriter(filewriter);
 
                           //logik för att spara vår graf/map
+                          //måste spara bild oxå
 
                           writer.close();
 
