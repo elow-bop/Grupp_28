@@ -4,10 +4,13 @@ import javafx.scene.shape.Line;
 
 public class VisualEdge extends Line {
     public VisualEdge(VisualNode a, VisualNode b){
+        setStrokeWidth(3);
 
-        setStartX(a.coordinateX());
-        setStartY(a.coordinateY());
-        setEndX(b.coordinateX());
-        setEndY(b.coordinateX());
+        startXProperty().bind(a.coordinateX());
+        startYProperty().bind(a.coordinateY());
+        endXProperty().bind(b.coordinateX());
+        endXProperty().bind(b.coordinateY());
+
+
     }
 }

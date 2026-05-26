@@ -1,5 +1,6 @@
 package se.su.inlupp;
 
+import javafx.beans.binding.DoubleBinding;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -22,8 +23,10 @@ public class VisualNode extends BorderPane {
         setCenter(nodeName);
         setPrefSize(50, 50);
         setBackground(Background.fill(Color.AQUA));
-        //hanterare som hanterar om vi drar musen
+
         setOnMouseDragged(new DragHandler());
+        setOnMouseClicked(new ClickHandler());
+
 
     }
 
@@ -31,11 +34,12 @@ public class VisualNode extends BorderPane {
         return name;
     }
 
-    public double coordinateX(){
-        return x;
+    public DoubleBinding coordinateX(){
+        return layoutXProperty().add(getPrefWidth()/2.0);
     }
-    public double coordinateY(){
-        return y;
+
+    public DoubleBinding coordinateY(){
+        return layoutXProperty().add(getPrefHeight()/2.0);
     }
 
     class DragHandler implements EventHandler<MouseEvent> {
@@ -47,4 +51,12 @@ public class VisualNode extends BorderPane {
             y = newY;
         }
     }
+
+    class ClickHandler implements EventHandler<MouseEvent>{
+        public void handle(MouseEvent event){
+            Label selected = new Label("SELECTED");
+            setRight(selected);
+        }
+    }
+
 }

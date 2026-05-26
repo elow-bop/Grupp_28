@@ -103,6 +103,7 @@ public class Gui extends Application {
                   String selected = listCities.getSelectionModel().getSelectedItem();
                   cities.remove(selected);
                   controller.removeNode(selected);
+                  routePane.getChildren().remove(selected);
               });
 
       //addConnection
@@ -120,7 +121,6 @@ public class Gui extends Application {
                   addConnectionDialog.setContentText("Name");
                   addConnectionDialog.setContentText("Distance?");
                   addConnectionDialog.getDialogPane().setContent(connectionPane);
-
                   Optional<String> result = addConnectionDialog.showAndWait();
 
                   if (result.isPresent()) {
@@ -131,6 +131,9 @@ public class Gui extends Application {
                       routePane.getChildren().add(new VisualEdge(controller.getVisualNode(node1), controller.getVisualNode(node2)));
 
                       selected.clear();
+                      connectionDistance.clear();
+                      connectionName.clear();
+
                       root.setCenter(searchPane);
                   }
 
