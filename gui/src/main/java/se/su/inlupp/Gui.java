@@ -58,12 +58,15 @@ public class Gui extends Application {
       Pane routePane = new Pane();
 
       ListView<String> listCitiesRoute = new ListView<>(cities);
+      listCities.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
       Button showDFS = new Button("Show connection DFS");
       showDFS.setOnAction(
               (arg) -> {
+                  ObservableList<String> selected = listCitiesRoute.getSelectionModel().getSelectedItems();
+                  String node1 = selected.get(0);
+                  String node2 = selected.get(1);
 
-//                  Path<String> pathDFS = controller.pathFinderDFS();
               });
 
       Button showBFS = new Button("Show connection BFS");
