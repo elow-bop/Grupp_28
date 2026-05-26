@@ -205,7 +205,12 @@ public class Gui extends Application {
         open.setOnAction(
                 (arg) -> {
                     File openFile = fileChooser.showOpenDialog(stage);
-                    System.out.println(openFile);
+                    if(openFile != null){
+                        try{
+                            FileReader fileReader = new FileReader(openFile);
+                            BufferedReader reader = new BufferedReader(fileReader);
+                        }
+                    }
                 });
       MenuItem save = new MenuItem("Save");
       save.setOnAction(
