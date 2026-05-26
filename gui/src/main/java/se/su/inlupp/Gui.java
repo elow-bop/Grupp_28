@@ -57,6 +57,8 @@ public class Gui extends Application {
       //Search: skapa scen för att visa noderna och vägar mellan:
       Pane routePane = new Pane();
 
+      ListView<String> listCitiesRoute = new ListView<>(cities);
+
       Button showDFS = new Button("Show connection DFS");
       showDFS.setOnAction(
               (arg) -> {
@@ -70,9 +72,12 @@ public class Gui extends Application {
 
               });
 
-      routePane.getChildren().addAll(showDFS, showBFS);
-      showDFS.relocate(300, 300);
-      showBFS.relocate(400, 400);
+      routePane.getChildren().addAll(showDFS, showBFS, listCitiesRoute);
+      showDFS.relocate(40, 370);
+      showBFS.relocate(40, 400);
+      listCitiesRoute.relocate(54, 210);
+      listCitiesRoute.setPrefHeight(140);
+      listCitiesRoute.setPrefWidth(110);
 
       Button searchButton = new Button("Search");
       searchButton.setOnAction(
@@ -175,11 +180,6 @@ public class Gui extends Application {
     vboxMenu.getChildren().add(menuBar);
     menuBar.getMenus().add(menu);
     FileChooser fileChooser = new FileChooser();
-    MenuItem searchRoute = new MenuItem("Search route");
-    searchRoute.setOnAction(
-            (arg) -> {
-                root.setCenter(searchPane);
-            });
     MenuItem settings = new MenuItem("Settings");
     settings.setOnAction(
             (arg) -> {
@@ -188,7 +188,7 @@ public class Gui extends Application {
     MenuItem home = new MenuItem("Home");
     home.setOnAction(
             (arg) -> {
-                  root.setCenter(backgroundView);
+                  root.setCenter(searchPane);
             });
     MenuItem open = new MenuItem("Open");
       open.setOnAction(
@@ -206,12 +206,12 @@ public class Gui extends Application {
             (arg) -> {
                 stage.close();
             });
-    menu.getItems().addAll(searchRoute, settings, home, exit, save, open);
+    menu.getItems().addAll(home, settings, save, open, exit);
 
 
     //Stoppa in i root
     root.setTop(vboxMenu);
-    root.setCenter(backgroundView);
+    root.setCenter(searchPane);
 
     Scene scene = new Scene(root, 735, 490);
     stage.setScene(scene);
