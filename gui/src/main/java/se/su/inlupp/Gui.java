@@ -209,6 +209,11 @@ public class Gui extends Application {
                         try{
                             FileReader fileReader = new FileReader(openFile);
                             BufferedReader reader = new BufferedReader(fileReader);
+
+                            reader.close();
+
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION, "File open");
+                            alert.showAndWait();
                         }
                     }
                 });
