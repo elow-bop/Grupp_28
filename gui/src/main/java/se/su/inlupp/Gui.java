@@ -14,7 +14,8 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.stage.WindowEvent;
 
-import java.io.File;
+import java.io.*;
+import java.util.Map;
 import java.util.Optional;
 
 public class Gui extends Application {
@@ -239,6 +240,27 @@ public class Gui extends Application {
     stage.setScene(scene);
     stage.show();
   }
+    private void open(String fileName){
+        try {
+            FileInputStream file = new FileInputStream(fileName);
+            ObjectInputStream in = new ObjectInputStream(file);
+//            lexikon = (Map) in.readObject();
+//            ObservableList<String> theList =  FXCollections.observableArrayList(lexikon.keySet());
+//            FXCollections.sort(theList);
+//            listView.setItems(theList);
+            //Här ska vi isyället koppla ihop med våran graf!
+            //Får se om vi ska koppla ihop ut det med
+        } catch (FileNotFoundException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Can't open file " + fileName + "!");
+            alert.showAndWait();
+        } catch (IOException e){
+            Alert alert = new Alert(Alert.AlertType.ERROR, "IO-error " + e.getMessage());
+            alert.showAndWait();
+        } catch (ClassNotFoundException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Can't find class " + e.getMessage());
+            alert.showAndWait();
+        }
+    }
 
   public static void main(String[] args) {
     launch(args);
