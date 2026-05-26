@@ -201,11 +201,36 @@ public class Gui extends Application {
             (arg) -> {
                   root.setCenter(backgroundView);
             });
+    MenuItem open = new MenuItem("Open");
+        open.setOnAction(
+                (arg) -> {
+                    File openFile = fileChooser.showOpenDialog(stage);
+                    System.out.println(openFile);
+                });
       MenuItem save = new MenuItem("Save");
       save.setOnAction(
               (arg) -> {
                   File saveFile = fileChooser.showSaveDialog(stage);
-                  System.out.println(saveFile);
+                  if (saveFile != null) {
+                      try {
+                          FileWriter filewriter = new FileWriter(saveFile);
+                          BufferedWriter writer = new BufferedWriter(filewriter);
+
+                          //logik för att spara vår graf/map
+
+                          writer.close();
+
+                          Alert alert = new Alert(Alert.AlertType.INFORMATION, "File saved");
+                          alert.showAndWait();
+                          hasChanges = false;
+
+                      } catch (IOException e) {
+                          Alert alert = new Alert(Alert.AlertType.ERROR, "Could Not Save file " + e.getMessage());
+                          alert.showAndWait();
+                      }
+
+                  }
+
               });
     MenuItem exit = new MenuItem("Exit");
     exit.setOnAction(
@@ -228,9 +253,7 @@ public class Gui extends Application {
             }
     }
             });
-    menu.getItems().addAll(searchRoute, settings, home, save, exit);
-
-
+    menu.getItems().addAll(searchRoute, settings, home, open, save, exit);
 
     //Stoppa in i root
     root.setTop(vboxMenu);
@@ -240,27 +263,7 @@ public class Gui extends Application {
     stage.setScene(scene);
     stage.show();
   }
-    private void open(String fileName){
-        try {
-            FileInputStream file = new FileInputStream(fileName);
-            ObjectInputStream in = new ObjectInputStream(file);
-//            lexikon = (Map) in.readObject();
-//            ObservableList<String> theList =  FXCollections.observableArrayList(lexikon.keySet());
-//            FXCollections.sort(theList);
-//            listView.setItems(theList);
-            //Här ska vi isyället koppla ihop med våran graf!
-            //Får se om vi ska koppla ihop ut det med
-        } catch (FileNotFoundException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Can't open file " + fileName + "!");
-            alert.showAndWait();
-        } catch (IOException e){
-            Alert alert = new Alert(Alert.AlertType.ERROR, "IO-error " + e.getMessage());
-            alert.showAndWait();
-        } catch (ClassNotFoundException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Can't find class " + e.getMessage());
-            alert.showAndWait();
-        }
-    }
+
 
   public static void main(String[] args) {
     launch(args);
