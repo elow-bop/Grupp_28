@@ -10,14 +10,11 @@ import javafx.scene.paint.Color;
 
 public class VisualNode extends BorderPane {
     private String name;
-    private double x;
-    private double y;
+    private double startX, startY;
 
     public VisualNode(String name, double x, double y) {
         relocate(x,y);
         this.name = name;
-        this.x = x;
-        this.y = y;
 
         Label nodeName = new Label(name);
         setCenter(nodeName);
@@ -25,9 +22,8 @@ public class VisualNode extends BorderPane {
         setBackground(Background.fill(Color.AQUA));
 
         setOnMouseDragged(new DragHandler());
+        setOnMousePressed(new StartDragHandler);
         setOnMouseClicked(new ClickHandler());
-
-
     }
 
     public String getName(){
@@ -47,8 +43,6 @@ public class VisualNode extends BorderPane {
             double newX = getLayoutX() + event.getX();
             double newY = getLayoutY() + event.getY();
             relocate(newX, newY);
-            x = newX;
-            y = newY;
         }
     }
 
@@ -59,4 +53,10 @@ public class VisualNode extends BorderPane {
         }
     }
 
+    class StartDragHandler implements EventHandler<MouseEvent> {
+        public void handle(MouseEvent event) {
+            startX = event.getX();
+            startY = event.getY();
+        }
+    }
 }
