@@ -236,9 +236,8 @@ public class Gui extends Application {
                           FileWriter filewriter = new FileWriter(saveFile);
                           BufferedWriter writer = new BufferedWriter(filewriter);
 
-                          for(Map.Entry<String, String> entry : graph.entrySet()){
-                              writer.write(entry.getKey() + ":" + entry.getValue());
-                              writer.newLine();
+                          for() {
+
                           }
                           //måste spara bild oxå
 
