@@ -205,14 +205,23 @@ public class Gui extends Application {
         open.setOnAction(
                 (arg) -> {
                     File openFile = fileChooser.showOpenDialog(stage);
-                    if(openFile != null){
-                        try{
+                    if(openFile != null) {
+                        try {
                             FileReader fileReader = new FileReader(openFile);
                             BufferedReader reader = new BufferedReader(fileReader);
 
+                            //logik för att läsa in det från filen till en map
+
                             reader.close();
 
+                            // logik för att visa det på våran lista och i vår visual.
+
                             Alert alert = new Alert(Alert.AlertType.INFORMATION, "File open");
+                            alert.showAndWait();
+                        } catch (FileNotFoundException e) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR, "Could Not Find File " + e.getMessage());
+                        } catch (IOException e) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR, "IO-Error " + e.getMessage());
                             alert.showAndWait();
                         }
                     }
