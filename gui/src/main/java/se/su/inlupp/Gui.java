@@ -210,12 +210,22 @@ public class Gui extends Application {
                             FileReader fileReader = new FileReader(openFile);
                             BufferedReader reader = new BufferedReader(fileReader);
 
-                            //Läsa in allt
-                            //ska läsa in bild också.
+                            //rensa graf, lista osv.
+                            String current = "";
+                            while ( reader != null){
+                                if(reader.equals("{BAKGRUND}")){
+                                    current = "background";
+                                    //ropa på metoden som sätter bakgrund
+                                } else if(reader.equals("{NODES}")){
+                                    current = "nodes";
+                                    //ropa in metoden som läser in noder? ListView??
+                                } else if(reader.equals("{EDGES}")) {
+                                    current = "edges";
+                                    //ropa på metoden som hanterar kanter.
+                                }
+                            }
 
                             reader.close();
-
-                            // logik för att visa det på våran lista och i vår visual.
 
                             Alert alert = new Alert(Alert.AlertType.INFORMATION, "File open");
                             alert.showAndWait();
