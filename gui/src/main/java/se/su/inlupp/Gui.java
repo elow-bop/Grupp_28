@@ -210,7 +210,7 @@ public class Gui extends Application {
                             FileReader fileReader = new FileReader(openFile);
                             BufferedReader reader = new BufferedReader(fileReader);
 
-                            //logik för att läsa in det från filen till en map
+                            //Läsa in allt
                             //ska läsa in bild också.
 
                             reader.close();
@@ -236,7 +236,10 @@ public class Gui extends Application {
                           FileWriter filewriter = new FileWriter(saveFile);
                           BufferedWriter writer = new BufferedWriter(filewriter);
 
-                          //logik för att spara vår graf/map
+                          for(Map.Entry<String, String> entry : map.entrySet()){
+                              writer.write(entry.getKey() + ":" + entry.getValue());
+                              writer.newLine();
+                          }
                           //måste spara bild oxå
 
                           writer.close();
