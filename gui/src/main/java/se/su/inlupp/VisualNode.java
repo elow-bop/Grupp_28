@@ -31,11 +31,11 @@ public class VisualNode extends BorderPane {
     }
 
     public DoubleBinding coordinateX(){
-        return layoutXProperty().add(getPrefWidth()/2.0);
+        return layoutXProperty().add(getPrefWidth()/2);
     }
 
     public DoubleBinding coordinateY(){
-        return layoutXProperty().add(getPrefHeight()/2.0);
+        return layoutYProperty().add(getPrefHeight()/2);
     }
 
     class DragHandler implements EventHandler<MouseEvent> {

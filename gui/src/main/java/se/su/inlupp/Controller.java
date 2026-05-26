@@ -7,22 +7,20 @@ public class Controller {
     private Graph<String> graph = new ListGraph<String>();
     Set<VisualNode> visualNodes = new HashSet<>();
 
-    public void addNode(String node){
+    public VisualNode addNode(String node){
         graph.add(node);
+        VisualNode visualNode = new VisualNode(node, 100, 100);
+        visualNodes.add(visualNode);
+        return visualNode;
     }
 
     public void removeNode(String node){
         graph.remove(node);
+        visualNodes.remove(node);
     }
 
     public void addConnection(String node1, String node2, String transportation, int distance ){
         graph.connect(node1, node2, transportation, distance);
-    }
-
-    public VisualNode addVisualNode(String name){
-        VisualNode visualNode = new VisualNode(name, 100, 100);
-        visualNodes.add(visualNode);
-        return visualNode;
     }
 
     public VisualNode getVisualNode(String name){
@@ -33,5 +31,7 @@ public class Controller {
         }
         return null;
     }
+
+
 }
 

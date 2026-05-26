@@ -57,10 +57,20 @@ public class Gui extends Application {
       //Search: skapa scen för att visa noderna och vägar mellan:
       Pane routePane = new Pane();
 
+      Button showConnection = new Button("Show connection");
+      showConnection.setOnAction(
+              (arg) -> {
+
+              });
+
+      routePane.getChildren().add(showConnection);
+      showConnection.relocate(400, 400);
+
       Button searchButton = new Button("Search");
       searchButton.setOnAction(
               (arg) -> {
                   root.setCenter(routePane);
+
               });
 
       //Add-button
@@ -86,11 +96,8 @@ public class Gui extends Application {
                       alert.setContentText("Correct city?");
                       Optional<ButtonType> answer = alert.showAndWait();
                       if (answer.isPresent() && answer.get() == ButtonType.OK) {
-                          controller.addNode(textInput);
                           cities.add(textInput);
-
-                          routePane.getChildren().add(controller.addVisualNode(textInput));
-
+                          routePane.getChildren().add(controller.addNode(textInput));
                           root.setCenter(searchPane);
                       }
                   }
@@ -103,7 +110,7 @@ public class Gui extends Application {
                   String selected = listCities.getSelectionModel().getSelectedItem();
                   cities.remove(selected);
                   controller.removeNode(selected);
-                  routePane.getChildren().remove(selected);
+                  routePane.getChildren().remove(controller.getVisualNode(selected));
               });
 
       //addConnection

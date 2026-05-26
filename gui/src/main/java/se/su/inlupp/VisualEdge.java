@@ -9,8 +9,6 @@ public class VisualEdge extends Line {
         startXProperty().bind(a.coordinateX());
         startYProperty().bind(a.coordinateY());
         endXProperty().bind(b.coordinateX());
-        endXProperty().bind(b.coordinateY());
-
-
+        endYProperty().bind(b.coordinateY());
     }
 }
