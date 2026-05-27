@@ -69,12 +69,7 @@ public class Gui extends Application {
                   String node1 = selectedRoute.get(0);
                   String node2 = selectedRoute.get(1);
                   Path<String> pathDFS = controller.pathFinderDFS(node1,node2);
-                  List<Edge<String>> connections = new ArrayList<>();
-                  //connections.add(node1);
-                  for(Edge<String> path : pathDFS){
-                      connections.add(path);
-                  }
-                  Alert alert = new Alert(Alert.AlertType.INFORMATION, connections.toString());
+                  Alert alert = new Alert(Alert.AlertType.INFORMATION, pathDFS.toString());
                   alert.showAndWait();
 
               });
@@ -82,7 +77,12 @@ public class Gui extends Application {
       Button showBFS = new Button("Show connection BFS");
       showBFS.setOnAction(
               (arg) -> {
-
+                  ObservableList<String> selectedRoute = listCitiesRoute.getSelectionModel().getSelectedItems();
+                  String node1 = selectedRoute.get(0);
+                  String node2 = selectedRoute.get(1);
+                  Path<String> pathBFS = controller.pathFinderBFS(node1,node2);
+                  Alert alert = new Alert(Alert.AlertType.INFORMATION, pathBFS.toString());
+                  alert.showAndWait();
               });
 
       routePane.getChildren().addAll(showDFS, showBFS, listCitiesRoute);
