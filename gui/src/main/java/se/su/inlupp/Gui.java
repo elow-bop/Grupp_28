@@ -12,10 +12,7 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.stage.WindowEvent;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -207,11 +204,41 @@ public class Gui extends Application {
             (arg) -> {
                   root.setCenter(searchPane);
             });
-    MenuItem open = new MenuItem("Open");
+      MenuItem open = new MenuItem("Open");
       open.setOnAction(
               (arg) -> {
                   File openFile = fileChooser.showOpenDialog(stage);
-                  System.out.println(openFile);
+                  if(openFile != null) {
+                      try {
+                          FileReader fileReader = new FileReader(openFile);
+                          BufferedReader reader = new BufferedReader(fileReader);
+
+                          //rensa graf, lista osv.
+                          String current = "";
+                          while ( reader != null){
+                              if(reader.equals("{BAKGRUND}")){
+                                  current = "background";
+                                  //ropa på metoden som sätter bakgrund
+                              } else if(reader.equals("{NODES}")){
+                                  current = "nodes";
+                                  //ropa in metoden som läser in noder? ListView??
+                              } else if(reader.equals("{EDGES}")) {
+                                  current = "edges";
+                                  //ropa på metoden som hanterar kanter.
+                              }
+                          }
+
+                          reader.close();
+
+                          Alert alert = new Alert(Alert.AlertType.INFORMATION, "File open");
+                          alert.showAndWait();
+                      } catch (FileNotFoundException e) {
+                          Alert alert = new Alert(Alert.AlertType.ERROR, "Could Not Find File " + e.getMessage());
+                      } catch (IOException e) {
+                          Alert alert = new Alert(Alert.AlertType.ERROR, "IO-Error " + e.getMessage());
+                          alert.showAndWait();
+                      }
+                  }
               });
 
       MenuItem save = new MenuItem("Save");
