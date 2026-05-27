@@ -190,6 +190,23 @@ class PathClass<T> implements Path<T>{
     }
 
     @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Start City: " + startNode.toString() + "\n");
+        sb.append(startNode);
+        for (Edge<T> edge : path) {
+            sb.append(" to ");
+            sb.append(edge.getDestination().toString());
+            sb.append(" , road  ").append(edge.getName()).append(" ," + edge.getWeight() + " kilometers" + "\n" + edge.getDestination().toString());
+        }
+        sb.append(" = end \n");
+        sb.append("Total distance: " + getTotalWeight() + " kilometers");
+
+        return sb.toString();
+    }
+
+    @Override
     public Iterator<Edge<T>> iterator() {
         return getEdges().iterator();
     }

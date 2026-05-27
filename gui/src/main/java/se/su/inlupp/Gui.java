@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class Gui extends Application {
@@ -25,10 +27,18 @@ public class Gui extends Application {
     ListView<String> listCities = new ListView<>(cities);
     listCities.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
+    //Connection
+    HBox connectionPane = new HBox();
+    TextField connectionName = new TextField();
+    TextField connectionDistance = new TextField();
+
+    connectionPane.getChildren().addAll(connectionName, connectionDistance);
+
     BorderPane root = new BorderPane();
 
     //Skapa bild
     Image background = new Image(Gui.class.getResourceAsStream("/se.su.inlupp/bild.jpg"));
+    ImageView backgroundView = new ImageView(background);
     ImageView backgroundViewHome = new ImageView(background);
     ImageView backgroundViewSearch = new ImageView(background);
 
@@ -59,16 +69,20 @@ public class Gui extends Application {
                   String node1 = selectedRoute.get(0);
                   String node2 = selectedRoute.get(1);
                   Path<String> pathDFS = controller.pathFinderDFS(node1,node2);
-                  System.out.print(pathDFS.toString());
-                  TextInputDialog testDialog = new TextInputDialog("Test");
-                  testDialog.showAndWait();
+                  Alert alert = new Alert(Alert.AlertType.INFORMATION, pathDFS.toString());
+                  alert.showAndWait();
 
               });
 
       Button showBFS = new Button("Show connection BFS");
       showBFS.setOnAction(
               (arg) -> {
-
+                  ObservableList<String> selectedRoute = listCitiesRoute.getSelectionModel().getSelectedItems();
+                  String node1 = selectedRoute.get(0);
+                  String node2 = selectedRoute.get(1);
+                  Path<String> pathBFS = controller.pathFinderBFS(node1,node2);
+                  Alert alert = new Alert(Alert.AlertType.INFORMATION, pathBFS.toString());
+                  alert.showAndWait();
               });
 
       routePane.getChildren().addAll(showDFS, showBFS, listCitiesRoute);
@@ -125,11 +139,6 @@ public class Gui extends Application {
               });
 
       //addConnection
-      HBox connectionPane = new HBox();
-      TextField connectionName = new TextField();
-      TextField connectionDistance = new TextField();
-
-      connectionPane.getChildren().addAll(connectionName, connectionDistance);
       Button addConnectionButton = new Button("add connection");
       addConnectionButton.setOnAction(
               (arg) -> {
@@ -140,7 +149,7 @@ public class Gui extends Application {
                   TextInputDialog addConnectionDialog = new TextInputDialog("Confirm");
                   addConnectionDialog.setTitle("Confirm");
                   addConnectionDialog.setHeaderText("Add connection between " + node1 + " and " +
-                          node2 + ". Enter type of transportation and distance");
+                          node2 + "while here, also enter name and distance");
                   addConnectionDialog.setContentText("Name");
                   addConnectionDialog.setContentText("Distance?");
                   addConnectionDialog.getDialogPane().setContent(connectionPane);
