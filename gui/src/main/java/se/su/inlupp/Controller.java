@@ -1,5 +1,7 @@
 package se.su.inlupp;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.FileNameMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -45,9 +47,23 @@ public class Controller {
         return pathFinder.findPath(graph, startNode, endNode);
     }
 
-    public String fileCreator(String fileName){
-        new FileCreator<>(graph, fileName);
-        return fileName;
+    public void fileSaver(File fileName) throws IOException{
+
+        try{
+            FileCreator<String> fc = new FileCreator<>(graph, fileName);
+            fc.fileWriter();
+        } catch (IOException e){
+            e.getMessage();
+        }
+    }
+
+    public void fileReader(File fileName) throws IOException{
+        try{
+            FileCreator<String> fc = new FileCreator<>(graph, fileName);
+            fc.fileReader();
+        }catch(IOException e){
+            e.getMessage();
+        }
     }
 
 

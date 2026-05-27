@@ -19,7 +19,8 @@ import java.util.Optional;
 
 public class Gui extends Application {
     private boolean hasChanges = true;
-    private Image newBackground = new Image(Gui.class.getResourceAsStream("/se.su.inlupp/bild.jpg"));
+     Image newBackground = new Image(Gui.class.getResourceAsStream("/se.su.inlupp/bild.jpg"));
+     Image background = new Image(Gui.class.getResourceAsStream("/se.su.inlupp/bild.jpg"));
 
   public void start(Stage stage) {
     stage.setTitle("Route Planner");
@@ -40,7 +41,6 @@ public class Gui extends Application {
     BorderPane root = new BorderPane();
 
     //Skapa bild
-    Image background = new Image(Gui.class.getResourceAsStream("/se.su.inlupp/bild.jpg"));
     ImageView backgroundView = new ImageView(background);
     ImageView backgroundViewHome = new ImageView(background);
     ImageView backgroundViewSearch = new ImageView(background);
@@ -226,52 +226,34 @@ public class Gui extends Application {
                   File openFile = fileChooser.showOpenDialog(stage);
                   if(openFile != null) {
                       try {
-                          FileReader fileReader = new FileReader(openFile);
-                          BufferedReader reader = new BufferedReader(fileReader);
-
-                          //rensa graf, lista osv.
-                          String current = "";
-                          while ( reader != null){
-                              if(reader.equals("{BAKGRUND}")){
-                                  current = "background";
-                                  //ropa på metoden som sätter bakgrund
-                              } else if(reader.equals("{NODES}")){
-                                  current = "nodes";
-                                  //ropa in metoden som läser in noder? ListView??
-                              } else if(reader.equals("{EDGES}")) {
-                                  current = "edges";
-                                  //ropa på metoden som hanterar kanter.
-                              }
-                          }
-
-                          reader.close();
+                          controller.fileReader(openFile);
 
                           Alert alert = new Alert(Alert.AlertType.INFORMATION, "File open");
                           alert.showAndWait();
-                      } catch (FileNotFoundException e) {
-                          Alert alert = new Alert(Alert.AlertType.ERROR, "Could Not Find File " + e.getMessage());
-                      } catch (IOException e) {
-                          Alert alert = new Alert(Alert.AlertType.ERROR, "IO-Error " + e.getMessage());
-                          alert.showAndWait();
+                      }catch (IOException e){
+                          e.printStackTrace();
                       }
                   }
+
               });
 
       MenuItem save = new MenuItem("Save");
       save.setOnAction(
               (arg) -> {
-                  File fileName = fileChooser.showSaveDialog(stage);
-                      try {
 
-                          Alert alert = new Alert(Alert.AlertType.INFORMATION, "File saved");
-                          alert.showAndWait();
-                          hasChanges = false;
+                  File saveFile = fileChooser.showSaveDialog(stage);
+                      if(saveFile != null) {
+                          try {
 
-                      } catch (IOException e) {
-                          Alert alert = new Alert(Alert.AlertType.ERROR, "Could Not Save file " + e.getMessage());
-                          alert.showAndWait();
+                              controller.fileSaver(saveFile);
+
+                              Alert alert = new Alert(Alert.AlertType.INFORMATION, "File saved");
+                              alert.showAndWait();
+                              hasChanges = false;
+                          }catch (IOException e){
+                              e.printStackTrace();
+                          }
                       }
-
               });
 
       MenuItem exit = new MenuItem("Exit");
@@ -318,6 +300,6 @@ public class Gui extends Application {
 //if (response == JFileChooser.APPROVE_OPTION) {
 //String valdVäg = fileChooser.getSelectedFile().getAbsolutePath();
 //
-//// Skicka sökvägen till din controller
+// Skicka sökvägen till din controller
 //    controller.createGraphFile(valdVäg);
 //}

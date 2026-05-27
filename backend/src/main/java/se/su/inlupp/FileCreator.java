@@ -1,41 +1,89 @@
 package se.su.inlupp;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.*;
 
 public class FileCreator<T> {
-    public FileCreator(Graph<T> graph, String filename){
-        try (FileWriter filewriter = new FileWriter(filename);
-            BufferedWriter writer = new BufferedWriter(filewriter))
+    private Graph<T> graph;
+    private File fileName;
+
+    public FileCreator(Graph<T> graph, File fileName) throws IOException {
+        this.graph = graph;
+        this.fileName = fileName;
+
+    }
+
+    public void fileWriter() throws IOException {
+       try (FileWriter filewriter = new FileWriter(fileName);
+        BufferedWriter writer = new BufferedWriter(filewriter))
         {
             writer.write("{NODES}");
             writer.newLine();
-            for(T node : graph.getNodes()){
+            for (T node : graph.getNodes()) {
                 writer.write(node.toString());
                 writer.newLine();
             }
 
             writer.write("{EDGES}");
             writer.newLine();
-
-            //Set<T> nodesChecked = new HashSet<>();
-            for(T node : graph.getNodes()){
-                for(Edge<T> edge : graph.getEdgesFrom(node)){
-//                    if(nodesChecked.contains(node) && nodesChecked.contains(edge.getDestination())){
-//                        continue;
-//                    }
-//                    nodesChecked.add(node);
-//                    nodesChecked.add(edge.getDestination());
-                    writer.write(edge.toString());
+            for (T node : graph.getNodes()) {
+                for (Edge<T> edge : graph.getEdgesFrom(node)) {
+                    String rad = node.toString() + ";" + edge.getDestination().toString() +
+                            ";" + edge.getName() + ";" + edge.getWeight();
+                    writer.write(rad);
                     writer.newLine();
                 }
             }
-        } catch (IOException e) {
+        } catch(IOException e){
             throw new RuntimeException(e);
         }
     }
+
+    public Graph<T> fileReader() throws IOException {
+       try (FileReader fileReader = new FileReader(fileName);
+        BufferedReader reader = new BufferedReader(fileReader))
+
+       {
+           String line;
+           String current = "";
+
+           while((line = reader.readLine()) != null){
+               if(line.trim().isEmpty()){
+                   continue;
+               }else if(line.equals("{NODES}")){
+                   current = "nodes";
+                   continue;
+               } else if (line.equals("{EDGES}")){
+                   current = "edges";
+                   continue;
+               }
+
+               switch(current){
+                   case "nodes":
+                       graph.add((T) line);
+                        break;
+
+                   case "edges":
+                       String[] edge = line.split(";");
+                       T fromNode = (T) edge[0];
+                       T toNode = (T) edge[1];
+                       String name = edge[2];
+                       int weight = Integer.parseInt(edge[3]);
+
+                       if(graph.getEdgeBetween(fromNode, toNode) == null){
+                           graph.connect(fromNode, toNode, name, weight);
+                       }
+                       break;
+               }
+
+        }
+
+    } catch (FileNotFoundException e) {
+           System.out.print(e.getMessage());
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+        return graph;
+    }
+
+
 }
