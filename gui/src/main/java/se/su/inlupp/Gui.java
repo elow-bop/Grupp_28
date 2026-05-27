@@ -10,6 +10,7 @@ import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
+import javafx.stage.WindowEvent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -214,11 +215,27 @@ public class Gui extends Application {
               (arg) -> {
                   stage.close();
               });
-    MenuItem exit = new MenuItem("Exit");
-    exit.setOnAction(
-            (arg) -> {
-                stage.close();
-            });
+      MenuItem exit = new MenuItem("Exit");
+      exit.setOnAction(
+              (arg) -> {
+                  if(hasChanges) {
+                      stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+                  }
+                  stage.close();
+              });
+      stage.setOnCloseRequest(event -> {
+          if(hasChanges) {
+              Alert error = new Alert(Alert.AlertType.CONFIRMATION);
+              error.setTitle("New Data Not Saved");
+              error.setHeaderText("Close anyway? ");
+              Optional<ButtonType> solution = error.showAndWait();
+              if(solution.isPresent() && solution.get() == ButtonType.OK){
+                  stage.close();
+              }else{
+                  event.consume();
+              }
+          }
+      });
     menu.getItems().addAll(home, settings, save, open, exit);
 
 
