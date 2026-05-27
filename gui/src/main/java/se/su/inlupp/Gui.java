@@ -59,9 +59,9 @@ public class Gui extends Application {
                   String node1 = selectedRoute.get(0);
                   String node2 = selectedRoute.get(1);
                   Path<String> pathDFS = controller.pathFinderDFS(node1,node2);
+                  System.out.print(pathDFS.toString());
                   TextInputDialog testDialog = new TextInputDialog("Test");
                   testDialog.showAndWait();
-
 
               });
 
