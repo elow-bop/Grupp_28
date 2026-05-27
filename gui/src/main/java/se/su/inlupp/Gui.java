@@ -260,38 +260,8 @@ public class Gui extends Application {
       MenuItem save = new MenuItem("Save");
       save.setOnAction(
               (arg) -> {
-
-                  File saveFile = fileChooser.showSaveDialog(stage);
-                  if (saveFile != null) {
+                  File fileName = fileChooser.showSaveDialog(stage);
                       try {
-                          FileWriter filewriter = new FileWriter(saveFile);
-                          BufferedWriter writer = new BufferedWriter(filewriter);
-                          writer.write("{BAKGRUND}");
-                          writer.newLine();
-                          if(newBackground != null) {
-                              //ska flytta ut newbackground
-                              String bildUrl = newBackground.getUrl();
-                              writer.write(bildUrl);
-                          }else{
-                              writer.write("/se.su.inlupp/bild.jpg");
-                          }
-                          writer.newLine();
-                          writer.write("{NODES}");
-                          writer.newLine();
-
-                          for(String node : controller.visualNodes) {
-                              writer.write(node);
-                              writer.newLine();
-                          }
-
-                          writer.write("{EDGES}");
-                          writer.newLine();
-                          for(String edge : cities){
-                              writer.write(edge);
-                              writer.newLine();
-                          }
-
-                          writer.close();
 
                           Alert alert = new Alert(Alert.AlertType.INFORMATION, "File saved");
                           alert.showAndWait();
@@ -301,8 +271,6 @@ public class Gui extends Application {
                           Alert alert = new Alert(Alert.AlertType.ERROR, "Could Not Save file " + e.getMessage());
                           alert.showAndWait();
                       }
-
-                  }
 
               });
 

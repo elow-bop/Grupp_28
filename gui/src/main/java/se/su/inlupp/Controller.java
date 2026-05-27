@@ -1,5 +1,6 @@
 package se.su.inlupp;
 
+import java.net.FileNameMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
@@ -44,9 +45,9 @@ public class Controller {
         return pathFinder.findPath(graph, startNode, endNode);
     }
 
-    public fileCreator(){
-        FileCreator fileCreator = new FileCreator(graph, FileCreator.path, );
-        return
+    public String fileCreator(String fileName){
+        new FileCreator<>(graph, fileName);
+        return fileName;
     }
 
 

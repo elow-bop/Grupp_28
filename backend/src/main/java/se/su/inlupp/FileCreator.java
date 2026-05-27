@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 public class FileCreator<T> {
     public FileCreator(Graph<T> graph, String filename){
@@ -19,10 +21,18 @@ public class FileCreator<T> {
 
             writer.write("{EDGES}");
             writer.newLine();
+
+            //Set<T> nodesChecked = new HashSet<>();
             for(T node : graph.getNodes()){
-                graph.getEdgesFrom(node);
-                writer.write(edge.toString());
-                writer.newLine();
+                for(Edge<T> edge : graph.getEdgesFrom(node)){
+//                    if(nodesChecked.contains(node) && nodesChecked.contains(edge.getDestination())){
+//                        continue;
+//                    }
+//                    nodesChecked.add(node);
+//                    nodesChecked.add(edge.getDestination());
+                    writer.write(edge.toString());
+                    writer.newLine();
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
