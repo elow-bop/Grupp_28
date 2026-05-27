@@ -108,6 +108,8 @@ public class ListGraph<T> implements Graph<T> {
         return null;
     }
 
+
+
     @Override
     //Klar
     public void setConnectionWeight(T node1, T node2, int weight) {

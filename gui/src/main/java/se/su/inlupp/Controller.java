@@ -8,6 +8,7 @@ public class Controller {
     private Graph<String> graph = new ListGraph<String>();
     Set<VisualNode> visualNodes = new HashSet<>();
 
+
     public VisualNode addNode(String node){
         graph.add(node);
         VisualNode visualNode = new VisualNode(node, 100, 100);
@@ -36,12 +37,16 @@ public class Controller {
     public Path<String> pathFinderDFS(String startNode, String endNode){
         DFSPathFinder pathFinder = new DFSPathFinder();
         return pathFinder.findPath(graph, startNode, endNode);
-
     }
 
     public Path<String> pathFinderBFS(String startNode, String endNode ){
         BFSPathFinder pathFinder = new BFSPathFinder();
         return pathFinder.findPath(graph, startNode, endNode);
+    }
+
+    public fileCreator(){
+        FileCreator fileCreator = new FileCreator(graph, FileCreator.path, );
+        return
     }
 
 
