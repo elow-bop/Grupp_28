@@ -58,14 +58,18 @@ public class Gui extends Application {
       Pane routePane = new Pane();
 
       ListView<String> listCitiesRoute = new ListView<>(cities);
-      listCities.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+      listCitiesRoute.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
       Button showDFS = new Button("Show connection DFS");
       showDFS.setOnAction(
               (arg) -> {
-                  ObservableList<String> selected = listCitiesRoute.getSelectionModel().getSelectedItems();
-                  String node1 = selected.get(0);
-                  String node2 = selected.get(1);
+                  ObservableList<String> selectedRoute = listCitiesRoute.getSelectionModel().getSelectedItems();
+                  String node1 = selectedRoute.get(0);
+                  String node2 = selectedRoute.get(1);
+                  Path<String> pathDFS = controller.pathFinderDFS(node1,node2);
+                  TextInputDialog testDialog = new TextInputDialog("Test");
+                  testDialog.showAndWait();
+
 
               });
 
