@@ -10,8 +10,9 @@ import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
+import javafx.stage.WindowEvent;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -203,22 +204,113 @@ public class Gui extends Application {
             (arg) -> {
                   root.setCenter(searchPane);
             });
-    MenuItem open = new MenuItem("Open");
+      MenuItem open = new MenuItem("Open");
       open.setOnAction(
               (arg) -> {
                   File openFile = fileChooser.showOpenDialog(stage);
-                  System.out.println(openFile);
+                  if(openFile != null) {
+                      try {
+                          FileReader fileReader = new FileReader(openFile);
+                          BufferedReader reader = new BufferedReader(fileReader);
+
+                          //rensa graf, lista osv.
+                          String current = "";
+                          while ( reader != null){
+                              if(reader.equals("{BAKGRUND}")){
+                                  current = "background";
+                                  //ropa på metoden som sätter bakgrund
+                              } else if(reader.equals("{NODES}")){
+                                  current = "nodes";
+                                  //ropa in metoden som läser in noder? ListView??
+                              } else if(reader.equals("{EDGES}")) {
+                                  current = "edges";
+                                  //ropa på metoden som hanterar kanter.
+                              }
+                          }
+
+                          reader.close();
+
+                          Alert alert = new Alert(Alert.AlertType.INFORMATION, "File open");
+                          alert.showAndWait();
+                      } catch (FileNotFoundException e) {
+                          Alert alert = new Alert(Alert.AlertType.ERROR, "Could Not Find File " + e.getMessage());
+                      } catch (IOException e) {
+                          Alert alert = new Alert(Alert.AlertType.ERROR, "IO-Error " + e.getMessage());
+                          alert.showAndWait();
+                      }
+                  }
               });
+
       MenuItem save = new MenuItem("Save");
       save.setOnAction(
               (arg) -> {
+
+                  File saveFile = fileChooser.showSaveDialog(stage);
+                  if (saveFile != null) {
+                      try {
+                          FileWriter filewriter = new FileWriter(saveFile);
+                          BufferedWriter writer = new BufferedWriter(filewriter);
+                          writer.write("{BAKGRUND}");
+                          writer.newLine();
+                          if(newBackground != null) {
+                              //ska flytta ut newbackground
+                              String bildUrl = newBackground.getUrl();
+                              writer.write(bildUrl);
+                          }else{
+                              writer.write("/se.su.inlupp/bild.jpg");
+                          }
+                          writer.newLine();
+                          writer.write("{NODES}");
+                          writer.newLine();
+
+                          for(String node : graph.getNodes()) {
+                              writer.write(node);
+                              writer.newLine();
+                          }
+
+                          writer.write("{EDGES}");
+                          writer.newLine();
+                          for(String edge : cities){
+                              writer.write(edge);
+                              writer.newLine();
+                          }
+
+                          writer.close();
+
+                          Alert alert = new Alert(Alert.AlertType.INFORMATION, "File saved");
+                          alert.showAndWait();
+                          hasChanges = false;
+
+                      } catch (IOException e) {
+                          Alert alert = new Alert(Alert.AlertType.ERROR, "Could Not Save file " + e.getMessage());
+                          alert.showAndWait();
+                      }
+
+                  }
+
+              });
+
+      MenuItem exit = new MenuItem("Exit");
+      exit.setOnAction(
+              (arg) -> {
+                  if(hasChanges) {
+                      stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+                  }
                   stage.close();
               });
-    MenuItem exit = new MenuItem("Exit");
-    exit.setOnAction(
-            (arg) -> {
-                stage.close();
-            });
+      stage.setOnCloseRequest(event -> {
+          if(hasChanges) {
+              Alert error = new Alert(Alert.AlertType.CONFIRMATION);
+              error.setTitle("New Data Not Saved");
+              error.setHeaderText("Close anyway? ");
+              Optional<ButtonType> solution = error.showAndWait();
+              if(solution.isPresent() && solution.get() == ButtonType.OK){
+                  stage.close();
+              }else{
+                  event.consume();
+              }
+          }
+      });
     menu.getItems().addAll(home, settings, save, open, exit);
 
 
