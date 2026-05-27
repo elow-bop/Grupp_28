@@ -311,3 +311,13 @@ public class Gui extends Application {
     launch(args);
   }
 }
+
+//JFileChooser fileChooser = new JFileChooser();
+//int response = fileChooser.showSaveDialog(null);
+//
+//if (response == JFileChooser.APPROVE_OPTION) {
+//String valdVäg = fileChooser.getSelectedFile().getAbsolutePath();
+//
+//// Skicka sökvägen till din controller
+//    controller.createGraphFile(valdVäg);
+//}
