@@ -25,18 +25,10 @@ public class Gui extends Application {
     ListView<String> listCities = new ListView<>(cities);
     listCities.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-    //Connection
-    HBox connectionPane = new HBox();
-    TextField connectionName = new TextField();
-    TextField connectionDistance = new TextField();
-
-    connectionPane.getChildren().addAll(connectionName, connectionDistance);
-
     BorderPane root = new BorderPane();
 
     //Skapa bild
     Image background = new Image(Gui.class.getResourceAsStream("/se.su.inlupp/bild.jpg"));
-    ImageView backgroundView = new ImageView(background);
     ImageView backgroundViewHome = new ImageView(background);
     ImageView backgroundViewSearch = new ImageView(background);
 
@@ -133,6 +125,11 @@ public class Gui extends Application {
               });
 
       //addConnection
+      HBox connectionPane = new HBox();
+      TextField connectionName = new TextField();
+      TextField connectionDistance = new TextField();
+
+      connectionPane.getChildren().addAll(connectionName, connectionDistance);
       Button addConnectionButton = new Button("add connection");
       addConnectionButton.setOnAction(
               (arg) -> {
@@ -143,7 +140,7 @@ public class Gui extends Application {
                   TextInputDialog addConnectionDialog = new TextInputDialog("Confirm");
                   addConnectionDialog.setTitle("Confirm");
                   addConnectionDialog.setHeaderText("Add connection between " + node1 + " and " +
-                          node2 + "while here, also enter name and distance");
+                          node2 + ". Enter type of transportation and distance");
                   addConnectionDialog.setContentText("Name");
                   addConnectionDialog.setContentText("Distance?");
                   addConnectionDialog.getDialogPane().setContent(connectionPane);
