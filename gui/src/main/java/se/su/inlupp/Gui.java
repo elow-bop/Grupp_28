@@ -12,7 +12,10 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.stage.WindowEvent;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -210,11 +213,56 @@ public class Gui extends Application {
                   File openFile = fileChooser.showOpenDialog(stage);
                   System.out.println(openFile);
               });
+
       MenuItem save = new MenuItem("Save");
       save.setOnAction(
               (arg) -> {
-                  stage.close();
+
+                  File saveFile = fileChooser.showSaveDialog(stage);
+                  if (saveFile != null) {
+                      try {
+                          FileWriter filewriter = new FileWriter(saveFile);
+                          BufferedWriter writer = new BufferedWriter(filewriter);
+                          writer.write("{BAKGRUND}");
+                          writer.newLine();
+                          if(newBackground != null) {
+                              //ska flytta ut newbackground
+                              String bildUrl = newBackground.getUrl();
+                              writer.write(bildUrl);
+                          }else{
+                              writer.write("/se.su.inlupp/bild.jpg");
+                          }
+                          writer.newLine();
+                          writer.write("{NODES}");
+                          writer.newLine();
+
+                          for(String node : graph.getNodes()) {
+                              writer.write(node);
+                              writer.newLine();
+                          }
+
+                          writer.write("{EDGES}");
+                          writer.newLine();
+                          for(String edge : cities){
+                              writer.write(edge);
+                              writer.newLine();
+                          }
+
+                          writer.close();
+
+                          Alert alert = new Alert(Alert.AlertType.INFORMATION, "File saved");
+                          alert.showAndWait();
+                          hasChanges = false;
+
+                      } catch (IOException e) {
+                          Alert alert = new Alert(Alert.AlertType.ERROR, "Could Not Save file " + e.getMessage());
+                          alert.showAndWait();
+                      }
+
+                  }
+
               });
+
       MenuItem exit = new MenuItem("Exit");
       exit.setOnAction(
               (arg) -> {
