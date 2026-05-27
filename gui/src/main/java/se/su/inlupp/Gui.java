@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class Gui extends Application {
+    private boolean hasChanges = true;
+    private Image newBackground = new Image(Gui.class.getResourceAsStream("/se.su.inlupp/bild.jpg"));
 
   public void start(Stage stage) {
     stage.setTitle("Route Planner");
@@ -52,7 +54,7 @@ public class Gui extends Application {
                   FileChooser fileChooser = new FileChooser();
                   File openFile = fileChooser.showOpenDialog(stage);
                   if(openFile != null && openFile.exists()){
-                      Image newBackground = new Image(openFile.toURI().toString());
+                      newBackground = new Image(openFile.toURI().toString());
                       backgroundView.setImage(newBackground);
                       backgroundViewHome.setImage(newBackground);
                       backgroundViewSearch.setImage(newBackground);
@@ -277,7 +279,7 @@ public class Gui extends Application {
                           writer.write("{NODES}");
                           writer.newLine();
 
-                          for(String node : graph.getNodes()) {
+                          for(String node : controller.visualNodes) {
                               writer.write(node);
                               writer.newLine();
                           }
