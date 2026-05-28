@@ -5,10 +5,13 @@ import java.io.*;
 public class FileCreator<T> {
     private Graph<T> graph;
     private File fileName;
+    private String imageString;
+    private String imageToGUI;
 
-    public FileCreator(Graph<T> graph, File fileName) throws IOException {
+    public FileCreator(Graph<T> graph, File fileName, String imageString) throws IOException {
         this.graph = graph;
         this.fileName = fileName;
+        this.imageString = imageString;
 
     }
 
@@ -16,6 +19,12 @@ public class FileCreator<T> {
        try (FileWriter filewriter = new FileWriter(fileName);
         BufferedWriter writer = new BufferedWriter(filewriter))
         {
+
+            writer.write("{BACKGROUND}");
+            writer.newLine();
+            writer.write(imageString);
+            writer.newLine();
+
             writer.write("{NODES}");
             writer.newLine();
             for (T node : graph.getNodes()) {
@@ -49,7 +58,10 @@ public class FileCreator<T> {
            while((line = reader.readLine()) != null){
                if(line.trim().isEmpty()){
                    continue;
-               }else if(line.equals("{NODES}")){
+               } else if(line.equals("{BACKGROUND}")){
+                   current = "background";
+                   continue;
+               } else if(line.equals("{NODES}")){
                    current = "nodes";
                    continue;
                } else if (line.equals("{EDGES}")){
@@ -58,6 +70,9 @@ public class FileCreator<T> {
                }
 
                switch(current){
+                   case "background":
+                       this.imageToGUI = line;
+                       break;
                    case "nodes":
                        graph.add((T) line);
                         break;
@@ -84,6 +99,10 @@ public class FileCreator<T> {
         e.printStackTrace();
     }
         return graph;
+    }
+
+    public String imageSender(){
+        return imageToGUI;
     }
 
 

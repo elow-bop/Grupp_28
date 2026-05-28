@@ -1,7 +1,6 @@
 package se.su.inlupp;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -13,12 +12,10 @@ import javafx.scene.image.Image;
 import javafx.stage.WindowEvent;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 public class Gui extends Application {
-    private boolean hasChanges = true;
+    private boolean hasChanges = false;
      Image newBackground = new Image(Gui.class.getResourceAsStream("/se.su.inlupp/bild.jpg"));
      Image background = new Image(Gui.class.getResourceAsStream("/se.su.inlupp/bild.jpg"));
 
@@ -27,7 +24,6 @@ public class Gui extends Application {
     stage.setTitle("Route Planner");
     Controller controller = new Controller();
     Pane routePane = new Pane();
-
 
       //List-vyn
     ListView<String> listCities = new ListView<>(controller.getCities());
@@ -61,6 +57,7 @@ public class Gui extends Application {
                       backgroundViewHome.setImage(newBackground);
                       backgroundViewSearch.setImage(newBackground);
                   }
+                  hasChanges = true;
               });
 
       backgroundLabel.relocate( 200, 100);
@@ -94,6 +91,7 @@ public class Gui extends Application {
                   Path<String> pathDFS = controller.pathFinderDFS(node1,node2);
                   Alert alert = new Alert(Alert.AlertType.INFORMATION, pathDFS.toString());
                   alert.showAndWait();
+                  hasChanges = true;
 
               });
 
@@ -106,6 +104,7 @@ public class Gui extends Application {
                   Path<String> pathBFS = controller.pathFinderBFS(node1,node2);
                   Alert alert = new Alert(Alert.AlertType.INFORMATION, pathBFS.toString());
                   alert.showAndWait();
+                  hasChanges = true;
               });
 
       routePane.getChildren().addAll(showDFS, showBFS, listCitiesRoute, goBack);
@@ -125,6 +124,12 @@ public class Gui extends Application {
                           routePane.getChildren().add(visualNode);
                       }
                   }
+                  for (VisualEdge visualEdge : controller.createVisualEdges(controller.getGraph())){
+                      if(!routePane.getChildren().contains(visualEdge)){
+                          routePane.getChildren().add(visualEdge);
+                      }
+                  }
+                  hasChanges = true;
 
               });
 
@@ -154,6 +159,7 @@ public class Gui extends Application {
                           controller.addNode(textInput);
                           controller.addCities(controller.getGraph());
                           root.setCenter(searchPane);
+                          hasChanges = true;
                       }
                   }
               });
@@ -167,6 +173,9 @@ public class Gui extends Application {
                   routePane.getChildren().remove(controller.getVisualNode(selected));
                   controller.removeNode(selected);
                   controller.removeNodeFromCities(selected);
+
+
+                  hasChanges = true;
 
 
               });
@@ -200,6 +209,7 @@ public class Gui extends Application {
                       connectionName.clear();
 
                       root.setCenter(searchPane);
+                      hasChanges = true;
                   }
 
               });
@@ -240,9 +250,15 @@ public class Gui extends Application {
       open.setOnAction(
               (arg) -> {
                   File openFile = fileChooser.showOpenDialog(stage);
+                  String imageString = newBackground.toString();
+
                   if(openFile != null) {
                       try {
-                          controller.fileReader(openFile);
+                          controller.fileReader(openFile, imageString);
+                          Image newImage = new Image(controller.getNewBackground());
+                          backgroundViewHome.setImage(newImage);
+                          backgroundViewSearch.setImage(newImage);
+                          backgroundViewSearch.setImage(newImage);
 
                           Alert alert = new Alert(Alert.AlertType.INFORMATION, "File open");
                           alert.showAndWait();
@@ -251,6 +267,7 @@ public class Gui extends Application {
                           e.printStackTrace();
                       }
                   }
+                  hasChanges = true;
 
               });
 
@@ -259,10 +276,11 @@ public class Gui extends Application {
               (arg) -> {
 
                   File saveFile = fileChooser.showSaveDialog(stage);
+                  String imageString = newBackground.toString();
                       if(saveFile != null) {
                           try {
 
-                              controller.fileSaver(saveFile);
+                              controller.fileSaver(saveFile, imageString);
 
                               Alert alert = new Alert(Alert.AlertType.INFORMATION, "File saved");
                               alert.showAndWait();
@@ -279,7 +297,6 @@ public class Gui extends Application {
                   if(hasChanges) {
                       stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
                   }
-                  stage.close();
               });
       stage.setOnCloseRequest(event -> {
           if(hasChanges) {

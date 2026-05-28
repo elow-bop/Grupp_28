@@ -13,7 +13,9 @@ import java.util.Set;
 public class Controller {
     private Graph<String> graph = new ListGraph<String>();
     private Set<VisualNode> visualNodes = new HashSet<>();
+    private Set<VisualEdge> visualEdges = new HashSet<>();
     private ObservableList<String> cities = FXCollections.observableArrayList();
+    private String newBackground;
 
     public void addNode(String node){
         graph.add(node);
@@ -27,17 +29,9 @@ public class Controller {
         return visualNodes;
     }
 
-    public void clearVisualNodes(){
-        visualNodes.clear();
-    }
-
-    public Set<VisualNode> getVisualNodes(){
-        return visualNodes;
-    }
-
-
     public void removeNode(String node){
         graph.remove(node);
+
     }
 
     public void removeNodeFromCities(String node){
@@ -48,9 +42,17 @@ public class Controller {
         graph.connect(node1, node2, transportation, distance);
     }
 
-//    public VisualEdge addVisualConnection(String node1, String node2){
-//        return new VisualEdge(node1, node2);
-//    }
+   public Set<VisualEdge> createVisualEdges(Graph<String> graph){
+       for(String s : graph){
+           for(Edge<String> edge : graph.getEdgesFrom(s)){
+               VisualNode node1 = getVisualNode(s);
+               VisualNode node2 = getVisualNode(edge.getDestination());
+               VisualEdge visualEdge = new VisualEdge(node1,node2);
+               visualEdges.add(visualEdge);
+           }
+       }
+       return visualEdges;
+    }
 
     public VisualNode getVisualNode(String name){
         for(VisualNode visualNode : visualNodes){
@@ -87,24 +89,32 @@ public class Controller {
         return pathFinder.findPath(graph, startNode, endNode);
     }
 
-    public void fileSaver(File fileName) throws IOException{
+    public void fileSaver(File fileName, String imageURL) throws IOException{
 
         try{
-            FileCreator<String> fc = new FileCreator<>(graph, fileName);
+            FileCreator<String> fc = new FileCreator<>(graph, fileName, imageURL);
             fc.fileWriter();
         } catch (IOException e){
             e.getMessage();
         }
     }
 
-    public void fileReader(File fileName) throws IOException{
+    public void fileReader(File fileName, String imageURL) throws IOException{
         try{
-            FileCreator<String> fc = new FileCreator<>(graph, fileName);
-            fc.fileReader();
+            FileCreator<String> fc = new FileCreator<>(graph, fileName,imageURL );
+            addCities(fc.fileReader());
+            this.newBackground = fc.imageSender();
         }catch(IOException e){
             e.getMessage();
         }
     }
+
+    public String getNewBackground(){
+        return newBackground;
+    }
+
+
+
 
 
 }
