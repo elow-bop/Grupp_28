@@ -23,12 +23,14 @@ public class Gui extends Application {
      Image background = new Image(Gui.class.getResourceAsStream("/se.su.inlupp/bild.jpg"));
 
   public void start(Stage stage) {
+
     stage.setTitle("Route Planner");
     Controller controller = new Controller();
+    Pane routePane = new Pane();
 
-    //List-vyn
-    ObservableList<String> cities = FXCollections.observableArrayList();
-    ListView<String> listCities = new ListView<>(cities);
+
+      //List-vyn
+    ListView<String> listCities = new ListView<>(controller.getCities());
     listCities.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
     //Connection
@@ -74,10 +76,14 @@ public class Gui extends Application {
       TextField startField = new TextField();
 
       //Search: skapa scen för att visa noderna och vägar mellan:
-      Pane routePane = new Pane();
 
-      ListView<String> listCitiesRoute = new ListView<>(cities);
+      ListView<String> listCitiesRoute = new ListView<>(controller.getCities());
       listCitiesRoute.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+      Button goBack = new Button("Go Back");
+      goBack.setOnAction(
+              (arg) -> {
+                  root.setCenter(searchPane);
+              });
 
       Button showDFS = new Button("Show connection DFS");
       showDFS.setOnAction(
@@ -102,17 +108,24 @@ public class Gui extends Application {
                   alert.showAndWait();
               });
 
-      routePane.getChildren().addAll(showDFS, showBFS, listCitiesRoute);
+      routePane.getChildren().addAll(showDFS, showBFS, listCitiesRoute, goBack);
       showDFS.relocate(40, 370);
       showBFS.relocate(40, 400);
       listCitiesRoute.relocate(54, 210);
       listCitiesRoute.setPrefHeight(140);
       listCitiesRoute.setPrefWidth(110);
+      goBack.relocate(10,100);
 
       Button searchButton = new Button("Search");
       searchButton.setOnAction(
               (arg) -> {
                   root.setCenter(routePane);
+                  for (VisualNode visualNode : controller.createVisualNodes(controller.getGraph())){
+                      if(!routePane.getChildren().contains(visualNode)){
+                          routePane.getChildren().add(visualNode);
+                      }
+                  }
+
               });
 
       //Add-button
@@ -138,8 +151,8 @@ public class Gui extends Application {
                       alert.setContentText("Correct city?");
                       Optional<ButtonType> answer = alert.showAndWait();
                       if (answer.isPresent() && answer.get() == ButtonType.OK) {
-                          cities.add(textInput);
-                          routePane.getChildren().add(controller.addNode(textInput));
+                          controller.addNode(textInput);
+                          controller.addCities(controller.getGraph());
                           root.setCenter(searchPane);
                       }
                   }
@@ -150,10 +163,14 @@ public class Gui extends Application {
       removeButton.setOnAction(
               (arg) -> {
                   String selected = listCities.getSelectionModel().getSelectedItem();
-                  cities.remove(selected);
-                  controller.removeNode(selected);
+
                   routePane.getChildren().remove(controller.getVisualNode(selected));
+                  controller.removeNode(selected);
+                  controller.removeNodeFromCities(selected);
+
+
               });
+
 
       //addConnection
       Button addConnectionButton = new Button("add connection");
@@ -173,11 +190,10 @@ public class Gui extends Application {
                   Optional<String> result = addConnectionDialog.showAndWait();
 
                   if (result.isPresent()) {
-                      //koppla ihop två noder graph.connect(selected,x )
                       int distance = Integer.parseInt(connectionDistance.getText());
 
                       controller.addConnection(node1, node2, connectionName.getText(), distance);
-                      routePane.getChildren().add(new VisualEdge(controller.getVisualNode(node1), controller.getVisualNode(node2)));
+//                      routePane.getChildren().add(new VisualEdge(controller.getVisualNode(node1), controller.getVisualNode(node2)));
 
                       selected.clear();
                       connectionDistance.clear();
@@ -218,7 +234,7 @@ public class Gui extends Application {
     MenuItem home = new MenuItem("Home");
     home.setOnAction(
             (arg) -> {
-                  root.setCenter(searchPane);
+                root.setCenter(searchPane);
             });
       MenuItem open = new MenuItem("Open");
       open.setOnAction(
@@ -230,6 +246,7 @@ public class Gui extends Application {
 
                           Alert alert = new Alert(Alert.AlertType.INFORMATION, "File open");
                           alert.showAndWait();
+
                       }catch (IOException e){
                           e.printStackTrace();
                       }
@@ -293,13 +310,3 @@ public class Gui extends Application {
     launch(args);
   }
 }
-
-//JFileChooser fileChooser = new JFileChooser();
-//int response = fileChooser.showSaveDialog(null);
-//
-//if (response == JFileChooser.APPROVE_OPTION) {
-//String valdVäg = fileChooser.getSelectedFile().getAbsolutePath();
-//
-// Skicka sökvägen till din controller
-//    controller.createGraphFile(valdVäg);
-//}

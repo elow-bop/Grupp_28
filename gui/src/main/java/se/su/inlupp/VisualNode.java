@@ -8,6 +8,8 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 
+import java.util.Objects;
+
 public class VisualNode extends BorderPane {
     private String name;
     private double startX, startY;
@@ -41,6 +43,26 @@ public class VisualNode extends BorderPane {
     public String getName(){
         return name;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+
+        if (!(other instanceof VisualNode)) {
+            return false;
+        }
+
+        VisualNode otherNode = (VisualNode) other;
+        return Objects.equals(name, otherNode.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
+
 
     public DoubleBinding coordinateX(){
         return layoutXProperty().add(getPrefWidth()/2);

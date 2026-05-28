@@ -71,6 +71,7 @@ public class FileCreator<T> {
 
                        if(graph.getEdgeBetween(fromNode, toNode) == null){
                            graph.connect(fromNode, toNode, name, weight);
+
                        }
                        break;
                }
